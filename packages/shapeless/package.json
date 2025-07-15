@@ -1,0 +1,69 @@
+{
+  "name": "@shapeless/core",
+  "version": "1.1.1",
+  "author": "Josh tried coding",
+  "main": "dist/server/index.js",
+  "module": "dist/server/index.mjs",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241218.0",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.1.8",
+    "chalk": "^5.4.0",
+    "dotenv": "^16.4.7",
+    "superjson": "^2.2.2",
+    "ts-node": "^10.9.2",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2"
+  },
+  "peerDependencies": {
+    "hono": ">=4.6.17",
+    "react": ">=16.8.0",
+    "zod": ">=3.24.1"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": {
+        "types": "./dist/server/index.d.ts",
+        "default": "./dist/server/index.js"
+      },
+      "require": {
+        "types": "./dist/server/index.d.ts",
+        "default": "./dist/server/index.js"
+      }
+    },
+    "./client": {
+      "import": {
+        "types": "./dist/client/index.d.ts",
+        "default": "./dist/client/index.js"
+      },
+      "require": {
+        "types": "./dist/client/index.d.ts",
+        "default": "./dist/client/index.js"
+      }
+    }
+  },
+  "description": "",
+  "files": [
+    "dist",
+    "package.json"
+  ],
+  "keywords": [],
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "watch": "tsup --watch",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit",
+    "test": "jest",
+    "clean": "rm -rf dist .turbo node_modules"
+  },
+  "type": "module",
+  "types": "dist/server/index.d.ts",
+  "dependencies": {
+    "@shapeless/shared": "workspace:*"
+  }
+}

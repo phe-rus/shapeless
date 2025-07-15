@@ -1,4 +1,4 @@
-# JStack - Build fast, lightweight and end-to-end typesafe Next.js apps
+# shapeless based on Jstack - Build fast, lightweight and end-to-end typesafe Next.js apps
 
 Built on Next.js 15, Hono, Tailwind and Drizzle ORM.
 

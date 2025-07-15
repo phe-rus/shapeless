@@ -1,5 +1,5 @@
 {
-  "name": "jstack",
+  "name": "shapeless",
   "version": "0.0.0",
   "description": "The stack for building seriously fast, lightweight and end-to-end typesafe Next.js apps.",
   "author": "Josh tried coding",
@@ -7,13 +7,31 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/upstash/jstack.git"
+    "url": "https://github.com/upstash/shapeless.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "turbo run build",
+    "clean": "turbo run clean && rm -rf node_modules .turbo",
+    "dev": "turbo run dev",
+    "start": "turbo run start",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck"
   },
-  "keywords": ["jstack", "next.js", "typescript", "hono"],
-  "dependencies": {
-    "prettier": "^3.4.2"
-  }
+  "keywords": [
+    "shapeless",
+    "next.js",
+    "typescript",
+    "hono"
+  ],
+  "devDependencies": {
+    "prettier": "latest",
+    "turbo": "latest",
+    "typescript": "latest"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "pnpm@10.13.1"
 }
