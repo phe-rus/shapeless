@@ -39,15 +39,16 @@
     "sort-package-json": "^2.11.0",
     "tsup": "^8.3.5"
   },
-  "peerDependencies": {
-    "zod": ">=3.24.1",
-    "next": ">=15"
-  },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.9.1",
     "boxen": "^8.0.1",
     "dotenv": "^16.4.7",
+    "zod": "^4",
+    "@planetscale/database": "^1.19.0",
+    "@neondatabase/serverless": "^1.0.1",
+    "@vercel/postgres": "^0.10.0",
+    "drizzle-orm": "^0.44.3",
     "drizzle-kit": "^0.30.1",
     "postgres": "^3.4.5",
     "type-fest": "^4.27.0",
