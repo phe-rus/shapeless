@@ -25,7 +25,7 @@
     "copy-base-template": "tsx scripts/copy-base-template.ts"
   },
   "keywords": [],
-  "author": "Josh tried coding",
+  "author": "Pherus",
   "license": "ISC",
   "dependencies": {
     "@clack/prompts": "^0.8.1",

@@ -1,6 +1,6 @@
 {
   "name": "@shapeless/shared",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -39,14 +39,14 @@
   "license": "ISC",
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241218.0",
-    "@types/node": "^22.10.2",
-    "dotenv": "^16.4.7",
-    "hono": "^4.6.17",
-    "superjson": "^2.2.2",
-    "ts-node": "^10.9.2",
-    "tsup": "^8.3.5",
-    "typescript": "^5.7.2",
-    "zod": "^3.24.1"
+    "@types/node": "^24",
+    "dotenv": "^17",
+    "hono": "^4",
+    "superjson": "^2",
+    "ts-node": "^10",
+    "tsup": "^8",
+    "typescript": "^5",
+    "zod": "^4"
   },
   "peerDependencies": {
     "zod": ">=3.24.1",
