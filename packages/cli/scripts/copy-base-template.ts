@@ -1,6 +1,9 @@
 import fs from "fs-extra"
 import path from "node:path"
 
+/**
+ * Change structure
+ */
 const filesToIgnore = [
   "src/server/shapeless.ts",
   "src/server/routers/post-router.ts",

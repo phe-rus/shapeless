@@ -1,6 +1,6 @@
 {
   "name": "create-shapeless-app",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "CLI tool to create a new shapeless application",
   "main": "dist/index.js",
   "type": "module",
@@ -24,7 +24,10 @@
     "clean": "rm -rf dist .turbo node_modules",
     "copy-base-template": "tsx scripts/copy-base-template.ts"
   },
-  "keywords": [],
+  "keywords": [
+    "shapeless",
+    "shapelesss"
+  ],
   "author": "Pherus",
   "license": "ISC",
   "dependencies": {
