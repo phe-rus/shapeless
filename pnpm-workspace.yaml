@@ -5,6 +5,7 @@ packages:
 onlyBuiltDependencies:
   - '@parcel/watcher'
   - '@tailwindcss/oxide'
+  - bufferutil
   - esbuild
   - sharp
   - unrs-resolver

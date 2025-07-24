@@ -2,15 +2,15 @@ import fs from "fs-extra"
 import path from "node:path"
 
 const filesToIgnore = [
-  "src/server/jstack.ts",
-  "src/server/routers/post-router.ts", 
+  "src/server/shapeless.ts",
+  "src/server/routers/post-router.ts",
   "drizzle.config.ts",
   "node_modules",
   ".git",
   ".vscode",
   ".wrangler",
   ".dev.vars",
-  ".next", 
+  ".next",
   ".turbo",
   "dist",
   "eslintrc.json",
@@ -37,7 +37,7 @@ async function main() {
     await fs.copy(sourceDir, targetDir, {
       filter: (src) => {
         const relativePath = path.relative(sourceDir, src)
-        return !filesToIgnore.some((path) => 
+        return !filesToIgnore.some((path) =>
           // Check if the path contains the ignored file/folder
           relativePath.includes(path) ||
           // Check if any parent directory matches exactly

@@ -1,13 +1,13 @@
 import { neon } from "@neondatabase/serverless"
 import { drizzle } from "drizzle-orm/neon-http"
 import { env } from "hono/adapter"
-import { jstack } from "@shapeless/core"
+import { shapeless } from "@shapeless/core"
 
 interface Env {
   Bindings: { DATABASE_URL: string }
 }
 
-export const j = jstack.init<Env>()
+export const j = shapeless.init<Env>()
 
 /**
  * Injects database instance into all procedures

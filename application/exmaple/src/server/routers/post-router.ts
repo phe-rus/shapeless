@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { j } from "../jstack"
+import { j } from "../shapeless"
 
 interface Post {
   id: number

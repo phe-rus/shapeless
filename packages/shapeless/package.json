@@ -1,19 +1,19 @@
 {
   "name": "@shapeless/core",
-  "version": "1.1.1",
-  "author": "Josh tried coding",
+  "version": "1.0.0",
+  "author": "Pherus",
   "main": "dist/server/index.js",
   "module": "dist/server/index.mjs",
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20241218.0",
-    "@types/node": "^22.10.2",
-    "@types/react": "^19.1.8",
-    "chalk": "^5.4.0",
-    "dotenv": "^16.4.7",
-    "superjson": "^2.2.2",
-    "ts-node": "^10.9.2",
-    "tsup": "^8.3.5",
-    "typescript": "^5.7.2"
+    "@cloudflare/workers-types": "^4",
+    "@types/node": "^24",
+    "@types/react": "^19",
+    "chalk": "^5",
+    "dotenv": "^17",
+    "superjson": "^2",
+    "ts-node": "^10",
+    "tsup": "^8",
+    "typescript": "^5"
   },
   "peerDependencies": {
     "hono": ">=4.6.17",

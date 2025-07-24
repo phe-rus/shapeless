@@ -31,7 +31,7 @@ export function fromHono<E extends Env = any>(
   }
 }
 
-class JStack {
+class shapelessStack {
   init<E extends Env = any>() {
     return {
       /**
@@ -129,4 +129,7 @@ class JStack {
   }
 }
 
-export const jstack = new JStack()
+/**
+ * Changed from jstack to shapeless
+ */
+export const shapeless = new shapelessStack()
