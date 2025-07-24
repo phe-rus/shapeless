@@ -1,4 +1,4 @@
-import { jstack } from "@shapeless/core"
+import { shapeless } from "@shapelesss/core"
 import { drizzle } from "drizzle-orm/postgres-js"
 import { env } from "hono/adapter"
 
@@ -6,7 +6,7 @@ interface Env {
   Bindings: { DATABASE_URL: string }
 }
 
-export const j = jstack.init<Env>()
+export const j = shapeless.init<Env>()
 
 /**
  * Type-safely injects database into all procedures

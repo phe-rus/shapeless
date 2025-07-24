@@ -1,5 +1,5 @@
 import type { AppRouter } from "@/server"
-import { createClient } from "@shapeless/core"
+import { createClient } from "@shapelesss/core"
 
 /**
  * Your type-safe API client

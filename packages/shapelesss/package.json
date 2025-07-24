@@ -1,5 +1,5 @@
 {
-  "name": "@shapeless/core",
+  "name": "@shapelesss/core",
   "version": "1.0.0",
   "author": "Pherus",
   "main": "dist/server/index.js",
@@ -64,6 +64,6 @@
   "type": "module",
   "types": "dist/server/index.d.ts",
   "dependencies": {
-    "@shapeless/shared": "workspace:*"
+    "@shapelesss/shared": "workspace:*"
   }
 }

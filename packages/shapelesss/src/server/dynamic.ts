@@ -9,7 +9,7 @@ import { Router } from "./router"
  * @throws {Error} If module has no exports, multiple exports, or invalid Router
  * 
  * @example
- * import { dynamic } from "@shapeless/core"
+ * import { dynamic } from "@shapelesss/core"
  * 
  * const appRouter = j.mergeRouters(api, {
  *   router: dynamic(() => import("./routers/my-router")),
@@ -31,7 +31,7 @@ export const dynamic = <T extends Router>(
     if (routers.length > 1) {
       throw new Error(
         `Error dynamically loading router: Multiple Router exports detected in module (${Object.keys(module).join(", ")}). ` +
-          "Please export only one Router instance per module."
+        "Please export only one Router instance per module."
       )
     }
 
@@ -39,7 +39,7 @@ export const dynamic = <T extends Router>(
     if (!(router instanceof Router)) {
       throw new Error(
         "Error dynamically loading router: Invalid router module - Expected exported value to be a Router instance, " +
-          `but received ${router === null ? "null" : typeof router}. Are you exporting multiple functions from this file?`,
+        `but received ${router === null ? "null" : typeof router}. Are you exporting multiple functions from this file?`,
       )
     }
 

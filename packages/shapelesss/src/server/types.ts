@@ -4,7 +4,7 @@ import { z } from "zod"
 
 import { Env, Input } from "hono/types"
 import { StatusCode } from "hono/utils/http-status"
-import { ServerSocket } from "@shapeless/shared"
+import { ServerSocket } from "@shapelesss/shared"
 import { IO } from "./io"
 
 type SuperJSONParsedType<T> = ReturnType<typeof superjson.parse<T>>

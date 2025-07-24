@@ -1,10 +1,10 @@
-import { jstack } from "@shapeless/core"
+import { shapeless } from "@shapelesss/core"
 
 interface Env {
   Bindings: {}
 }
 
-export const j = jstack.init<Env>()
+export const j = shapeless.init<Env>()
 
 /**
  * Public (unauthenticated) procedures

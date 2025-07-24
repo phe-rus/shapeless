@@ -1,7 +1,7 @@
 import { neon } from "@neondatabase/serverless"
 import { drizzle } from "drizzle-orm/neon-http"
 import { env } from "hono/adapter"
-import { shapeless } from "@shapeless/core"
+import { shapeless } from "@shapelesss/core"
 
 interface Env {
   Bindings: { DATABASE_URL: string }

@@ -1,13 +1,13 @@
 import { drizzle } from "drizzle-orm/planetscale-serverless"
 import { env } from "hono/adapter"
 import { Client } from "@planetscale/database"
-import { jstack } from "@shapeless/core"
+import { shapeless } from "@shapelesss/core"
 
 interface Env {
   Bindings: { DATABASE_URL: string }
 }
 
-export const j = jstack.init<Env>()
+export const j = shapeless.init<Env>()
 
 /**
  * Type-safely injects database into all procedures

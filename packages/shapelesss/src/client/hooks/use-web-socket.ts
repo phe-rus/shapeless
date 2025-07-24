@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react"
-import { ClientSocket, SystemEvents } from "@shapeless/shared"
+import { ClientSocket, SystemEvents } from "@shapelesss/shared"
 
 export function useWebSocket<
   IncomingEvents extends Partial<SystemEvents> & Record<string, unknown>,

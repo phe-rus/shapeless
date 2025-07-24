@@ -1,4 +1,4 @@
-import { logger } from "@shapeless/shared"
+import { logger } from "@shapelesss/shared"
 
 export class IO<IncomingEvents, OutgoingEvents> {
   private targetRoom: string | null = null

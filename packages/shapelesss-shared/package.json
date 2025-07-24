@@ -1,5 +1,5 @@
 {
-  "name": "@shapeless/shared",
+  "name": "@shapelesss/shared",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -35,7 +35,7 @@
     "package.json"
   ],
   "keywords": [],
-  "author": "Josh tried coding",
+  "author": "Pherus",
   "license": "ISC",
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241218.0",
