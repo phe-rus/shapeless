@@ -16,6 +16,14 @@ export const dependencyVersionMap = {
   "@planetscale/database": "^1.19.0",
   postgres: "^3.4.5",
 
+  // D1 Database
+  "better-sqlite3": "^12.2.0",
+  "@types/better-sqlite3": "^7",
+
+  // Opennextjs
+  "@opennextjs/cloudflare": "^1",
+
+
   // TailwindCSS
   tailwindcss: "^4.0.0",
   postcss: "^8.5.1",

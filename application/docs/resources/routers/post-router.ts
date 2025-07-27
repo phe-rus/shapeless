@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { desc } from "drizzle-orm"
-import { posts } from "@resources/db/schema"
+import { postInsert, posts } from "@resources/db/schema"
 import { app, publicProcedure } from "../shapeless"
 
 export const postRouter = app.router({
@@ -22,7 +22,11 @@ export const postRouter = app.router({
       const { name } = input
       const { db } = ctx
 
-      const post = await db.insert(posts).values({ name })
+      const insertData: postInsert = {
+        name: name
+      }
+
+      const post = await db.insert(posts).values(insertData)
 
       return c.superjson(post)
     }),

@@ -31,6 +31,15 @@ const main = async () => {
   const pkgJson = fs.readJSONSync(path.join(projectDir, "package.json"))
   pkgJson.name = projectName
 
+  if (provider === "d1-http") {
+    const pkgJson = fs.readJSONSync(path.join(projectDir, "wrangler.jsonc"))
+    pkgJson.name = projectName
+
+    fs.writeJSONSync(path.join(projectDir, "wrangler.jsonc"), pkgJson, {
+      spaces: 2,
+    })
+  }
+
   fs.writeJSONSync(path.join(projectDir, "package.json"), pkgJson, {
     spaces: 2,
   })

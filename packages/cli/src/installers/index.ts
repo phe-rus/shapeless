@@ -1,6 +1,7 @@
 import { PackageManager } from "@/utils/get-user-pkg-manager.js"
 import { drizzleInstaller } from "./drizzle.js"
 import { neonInstaller } from "./neon.js"
+import { d1Installer } from "./d1-http.js"
 import { noOrmInstaller } from "./no-orm.js"
 import { postgresInstaller } from "./postgres.js"
 import { vercelPostgresInstaller } from "./vercel-postgres.js"
@@ -11,10 +12,10 @@ import { planetscaleInstaller } from "./planetscale.js"
 export const orms = ["none", "drizzle"] as const
 export type Orm = (typeof orms)[number]
 
-export const dialects = ["postgres"] as const
+export const dialects = ["postgres", "sqlite"] as const
 export type Dialect = (typeof dialects)[number]
 
-export const providers = ["postgres", "neon", "vercel-postgres", "planetscale"] as const
+export const providers = ["postgres", "neon", "d1-http", "vercel-postgres", "planetscale"] as const
 export type Provider = (typeof providers)[number]
 
 export type InstallerMap = {
@@ -66,6 +67,10 @@ export const buildInstallerMap = (
     neon: {
       inUse: selectedProvider === "neon",
       installer: neonInstaller,
+    },
+    "d1-http": {
+      inUse: selectedProvider === "d1-http",
+      installer: d1Installer
     },
     "vercel-postgres": {
       inUse: selectedProvider === "vercel-postgres",

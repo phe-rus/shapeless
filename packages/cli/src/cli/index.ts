@@ -1,12 +1,14 @@
-import { intro, isCancel, outro, select, text } from "@clack/prompts"
+import * as p from "@clack/prompts"
 import color from "picocolors"
 import { getUserPkgManager } from "@/utils/get-user-pkg-manager.js"
+import chalk from "chalk"
+import { info } from "console"
 
 export interface CliResults {
   projectName: string
   orm: "none" | "drizzle" | undefined
-  dialect?: "postgres" | undefined
-  provider?: "neon" | "postgres" | "vercel-postgres" | "planetscale" | undefined
+  dialect?: "postgres" | 'sqlite' | undefined
+  provider?: "neon" | "postgres" | 'd1-http' | "vercel-postgres" | "planetscale" | undefined
   noInstall?: boolean
 }
 
@@ -14,19 +16,20 @@ export type Dialect = CliResults["dialect"]
 export type Orm = CliResults["orm"]
 
 export async function runCli(): Promise<CliResults | undefined> {
-  console.clear()
+  //console.clear()
 
   // Parse command line arguments manually
   const args = process.argv.slice(2)
   const cliProvidedName = args[0]?.startsWith("--") ? undefined : args[0]
   const noInstallFlag = args.includes("--noInstall")
 
-  intro(color.bgCyan(" SHAPELESS CLI "))
+  p.intro(color.bgCyan(chalk.black(" SHAPELESS CLI ")))
+  p.note("Welcome to Shapeless. Let's create a project!")
 
   const projectName =
     cliProvidedName ||
-    (await text({
-      message: "What will your project be called?",
+    (await p.text({
+      message: "What will your project be called ?",
       placeholder: "my-shapeless-app",
       validate: (value) => {
         if (!value) return "Please enter a project name"
@@ -35,12 +38,12 @@ export async function runCli(): Promise<CliResults | undefined> {
       },
     }))
 
-  if (isCancel(projectName)) {
-    outro("Setup cancelled.")
+  if (p.isCancel(projectName)) {
+    p.outro("Setup cancelled.")
     return undefined
   }
 
-  const orm = await select<"none" | "drizzle">({
+  const orm = await p.select<"none" | "drizzle">({
     message: "Which database ORM would you like to use?",
     options: [
       { value: "none", label: "None" },
@@ -48,27 +51,47 @@ export async function runCli(): Promise<CliResults | undefined> {
     ],
   })
 
-  if (isCancel(orm)) {
-    outro("Setup cancelled.")
+  if (p.isCancel(orm)) {
+    p.outro("Setup cancelled.")
     return undefined
   }
 
   let dialect = undefined
   let provider = undefined
   if (orm === "drizzle") {
-    dialect = "postgres" as const // Only offering postgres
-
-    provider = await select({
-      message: "Which Postgres provider would you like to use?",
+    dialect = await p.select({
+      message: "Which dialect would you like to use",
       options: [
-        { value: "postgres", label: "PostgreSQL" },
-        { value: "neon", label: "Neon" },
-        { value: "vercel-postgres", label: "Vercel Postgres" },
-      ],
+        { value: "postgres", label: "Postgres" },
+        { value: "sqlite", label: "Sqlite" }
+      ]
     })
 
-    if (isCancel(provider)) {
-      outro("Setup cancelled.")
+    if (p.isCancel(dialect)) {
+      p.outro("Setup cancelled.")
+      return undefined
+    }
+
+    if (dialect === "sqlite") {
+      provider = await p.select({
+        message: "Which Sqlite provider would you like to use?",
+        options: [
+          { value: "d1-http", label: 'D1 Http' }
+        ],
+      })
+    } else {
+      provider = await p.select({
+        message: "Which Postgres provider would you like to use?",
+        options: [
+          { value: "postgres", label: "PostgreSQL" },
+          { value: "neon", label: "Neon" },
+          { value: "vercel-postgres", label: "Vercel Postgres" }
+        ],
+      })
+    }
+
+    if (p.isCancel(provider)) {
+      p.outro("Setup cancelled.")
       return undefined
     }
   }
@@ -76,7 +99,7 @@ export async function runCli(): Promise<CliResults | undefined> {
   let noInstall = noInstallFlag
   if (!noInstall) {
     const pkgManager = getUserPkgManager()
-    const shouldInstall = await select({
+    const shouldInstall = await p.select({
       message: `Should we run '${pkgManager}${pkgManager === "yarn" ? "" : " install"}' for you?`,
       options: [
         { value: false, label: "Yes" },
@@ -84,14 +107,20 @@ export async function runCli(): Promise<CliResults | undefined> {
       ],
     })
 
-    if (isCancel(shouldInstall)) {
-      outro("Setup cancelled.")
+    if (p.isCancel(shouldInstall)) {
+      p.outro("Setup cancelled.")
       return undefined
     }
 
     noInstall = shouldInstall
   }
 
+  info('Shapeless project successfully created!')
+  p.log.step(chalk.bgGreen(chalk.black(' Next Steps ')))
+  p.log.message(chalk.bgGreen(`cd ${chalk.black(projectName)}`))
+  p.log.message(chalk.bgGreen(`Dialet ${chalk.gray(orm)}`))
+  p.log.message(chalk.bgGreen(`Dialect ${chalk.gray(dialect)}`))
+  p.log.message(chalk.bgGreen(`Provider ${chalk.gray(provider)}`))
   return {
     projectName: projectName as string,
     orm,

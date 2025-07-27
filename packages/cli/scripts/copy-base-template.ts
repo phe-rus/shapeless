@@ -5,8 +5,6 @@ import path from "node:path"
  * Change structure of server to resources
  */
 const filesToIgnore = [
-  //"src/server/shapeless.ts",
-  //"src/server/routers/post-router.ts",
   "resources/shapeless.ts",
   "resources/routers/post-router.ts",
   "drizzle.config.ts",
@@ -18,6 +16,7 @@ const filesToIgnore = [
   ".next",
   ".turbo",
   "dist",
+  ".open-next",
   "eslintrc.json",
   ".DS_Store",
   "bun.lockb",

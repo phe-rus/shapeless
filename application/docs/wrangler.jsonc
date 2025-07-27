@@ -1,14 +1,35 @@
 {
-  "name": "shapeless-app",
-  "main": "src/server/index.ts",
-  "compatibility_date": "2025-02-14",
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "main": ".open-next/worker.js",
+  "name": "docs",
+  "compatibility_date": "2025-06-16",
+  "compatibility_flags": [
+    "nodejs_compat",
+    "global_fetch_strictly_public"
+  ],
   "observability": {
     "enabled": true
   },
+  "minify": true,
   "placement": {
     "mode": "smart"
   },
-  "dev": {
-    "port": 8080
-  }
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "replacewithyourown",
+      "database_id": "replacewithyourown",
+      "migrations_dir": "./drizzle"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "bucket_name": "replacewithyourown",
+      "binding": "R2"
+    }
+  ]
 }
