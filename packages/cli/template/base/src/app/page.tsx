@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils"
-import { RecentPost } from "./components/post"
+import { RecentPost } from "@resources/templates/post"
 
 export default async function Home() {
   return (

@@ -18,6 +18,88 @@ importers:
         specifier: latest
         version: 5.8.3
 
+  application/docs:
+    dependencies:
+      '@neondatabase/serverless':
+        specifier: ^0.10.4
+        version: 0.10.4
+      '@shapelesss/core':
+        specifier: ^1.0.0
+        version: 1.0.0(hono@4.8.9)(react@19.1.0)(zod@3.24.1)
+      '@tailwindcss/postcss':
+        specifier: ^4.0.0
+        version: 4.1.11
+      '@tanstack/react-query':
+        specifier: ^5.51.23
+        version: 5.83.0(react@19.1.0)
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
+      drizzle-orm:
+        specifier: ^0.39.0
+        version: 0.39.3(@cloudflare/workers-types@4.20250715.0)(@neondatabase/serverless@0.10.4)(@planetscale/database@1.19.0)(@types/pg@8.11.6)(@vercel/postgres@0.10.0)(postgres@3.4.7)
+      hono:
+        specifier: ^4.7.0
+        version: 4.8.9
+      next:
+        specifier: ^15.1.6
+        version: 15.4.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      react:
+        specifier: ^19.0.0
+        version: 19.1.0
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.1.0(react@19.1.0)
+      superjson:
+        specifier: ^2.2.1
+        version: 2.2.2
+      tailwind-merge:
+        specifier: ^2.5.2
+        version: 2.6.0
+      zod:
+        specifier: ^3.24.1
+        version: 3.24.1
+    devDependencies:
+      '@cloudflare/workers-types':
+        specifier: ^4.20250214.0
+        version: 4.20250715.0
+      '@types/node':
+        specifier: ^22.10.6
+        version: 22.16.4
+      '@types/react':
+        specifier: ^19.0.7
+        version: 19.1.8
+      '@types/react-dom':
+        specifier: ^19.0.3
+        version: 19.1.6(@types/react@19.1.8)
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.6.1
+      drizzle-kit:
+        specifier: ^0.30.1
+        version: 0.30.6
+      eslint:
+        specifier: ^9.18.0
+        version: 9.31.0(jiti@2.4.2)
+      eslint-config-next:
+        specifier: ^15.1.4
+        version: 15.4.1(eslint@9.31.0(jiti@2.4.2))(typescript@5.8.3)
+      eslint-plugin-drizzle:
+        specifier: ^0.2.3
+        version: 0.2.3(eslint@9.31.0(jiti@2.4.2))
+      postcss:
+        specifier: ^8
+        version: 8.5.6
+      tailwindcss:
+        specifier: ^4.0.0
+        version: 4.1.11
+      typescript:
+        specifier: ^5
+        version: 5.8.3
+      wrangler:
+        specifier: ^4.0.0
+        version: 4.26.0(@cloudflare/workers-types@4.20250715.0)(bufferutil@4.0.9)
+
   application/exmaple:
     dependencies:
       '@hono/zod-validator':
@@ -121,119 +203,37 @@ importers:
         specifier: ^5
         version: 5.8.3
 
-  'application/testing ':
-    dependencies:
-      '@neondatabase/serverless':
-        specifier: ^0.10.4
-        version: 0.10.4
-      '@shapelesss/core':
-        specifier: ^1.0.0
-        version: 1.0.0(hono@4.8.5)(react@19.1.0)(zod@3.24.1)
-      '@tailwindcss/postcss':
-        specifier: ^4.0.0
-        version: 4.1.11
-      '@tanstack/react-query':
-        specifier: ^5.51.23
-        version: 5.83.0(react@19.1.0)
-      clsx:
-        specifier: ^2.1.1
-        version: 2.1.1
-      drizzle-orm:
-        specifier: ^0.39.0
-        version: 0.39.3(@cloudflare/workers-types@4.20250715.0)(@neondatabase/serverless@0.10.4)(@planetscale/database@1.19.0)(@types/pg@8.11.6)(@vercel/postgres@0.10.0)(postgres@3.4.7)
-      hono:
-        specifier: ^4.7.0
-        version: 4.8.5
-      next:
-        specifier: ^15.1.6
-        version: 15.4.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      react:
-        specifier: ^19.0.0
-        version: 19.1.0
-      react-dom:
-        specifier: ^19.0.0
-        version: 19.1.0(react@19.1.0)
-      superjson:
-        specifier: ^2.2.1
-        version: 2.2.2
-      tailwind-merge:
-        specifier: ^2.5.2
-        version: 2.6.0
-      zod:
-        specifier: ^3.24.1
-        version: 3.24.1
-    devDependencies:
-      '@cloudflare/workers-types':
-        specifier: ^4.20250214.0
-        version: 4.20250715.0
-      '@types/node':
-        specifier: ^22.10.6
-        version: 22.16.4
-      '@types/react':
-        specifier: ^19.0.7
-        version: 19.1.8
-      '@types/react-dom':
-        specifier: ^19.0.3
-        version: 19.1.6(@types/react@19.1.8)
-      dotenv:
-        specifier: ^16.4.5
-        version: 16.6.1
-      drizzle-kit:
-        specifier: ^0.30.1
-        version: 0.30.6
-      eslint:
-        specifier: ^9.18.0
-        version: 9.31.0(jiti@2.4.2)
-      eslint-config-next:
-        specifier: ^15.1.4
-        version: 15.4.1(eslint@9.31.0(jiti@2.4.2))(typescript@5.8.3)
-      eslint-plugin-drizzle:
-        specifier: ^0.2.3
-        version: 0.2.3(eslint@9.31.0(jiti@2.4.2))
-      postcss:
-        specifier: ^8
-        version: 8.5.6
-      tailwindcss:
-        specifier: ^4.0.0
-        version: 4.1.11
-      typescript:
-        specifier: ^5
-        version: 5.8.3
-      wrangler:
-        specifier: ^4.0.0
-        version: 4.26.0(@cloudflare/workers-types@4.20250715.0)(bufferutil@4.0.9)
-
   packages/cli:
     dependencies:
       '@clack/prompts':
-        specifier: ^0.8.1
-        version: 0.8.2
+        specifier: ^0.11.0
+        version: 0.11.0
       '@shapelesss/core':
         specifier: ^1.0.0
-        version: 1.0.0(hono@4.8.5)(react@19.1.0)(zod@4.0.5)
+        version: 1.0.0(hono@4.8.9)(react@19.1.0)(zod@4.0.5)
       chalk:
-        specifier: ^5.3.0
+        specifier: ^5.4.1
         version: 5.4.1
       execa:
-        specifier: ^9.5.2
+        specifier: ^9.6.0
         version: 9.6.0
       fs-extra:
-        specifier: ^11.2.0
+        specifier: ^11.3.0
         version: 11.3.0
       hono:
-        specifier: ^4.7.0
-        version: 4.8.5
+        specifier: ^4.8.9
+        version: 4.8.9
       ora:
-        specifier: ^8.1.1
+        specifier: ^8.2.0
         version: 8.2.0
       picocolors:
         specifier: ^1.1.1
         version: 1.1.1
       sort-package-json:
-        specifier: ^2.11.0
-        version: 2.15.1
+        specifier: ^3.4.0
+        version: 3.4.0
       tsup:
-        specifier: ^8.3.5
+        specifier: ^8.5.0
         version: 8.5.0(jiti@2.4.2)(postcss@8.5.6)(typescript@5.8.3)(yaml@2.8.0)
     devDependencies:
       '@neondatabase/serverless':
@@ -246,8 +246,8 @@ importers:
         specifier: ^11.0.4
         version: 11.0.4
       '@types/node':
-        specifier: ^22.9.1
-        version: 22.16.4
+        specifier: ^24.1.0
+        version: 24.1.0
       '@vercel/postgres':
         specifier: ^0.10.0
         version: 0.10.0
@@ -255,22 +255,22 @@ importers:
         specifier: ^8.0.1
         version: 8.0.1
       dotenv:
-        specifier: ^16.4.7
-        version: 16.6.1
+        specifier: ^17.2.1
+        version: 17.2.1
       drizzle-kit:
-        specifier: ^0.30.1
-        version: 0.30.6
+        specifier: ^0.31.4
+        version: 0.31.4
       drizzle-orm:
         specifier: ^0.44.3
         version: 0.44.3(@cloudflare/workers-types@4.20250715.0)(@neondatabase/serverless@1.0.1)(@planetscale/database@1.19.0)(@types/pg@8.11.6)(@upstash/redis@1.35.1)(@vercel/postgres@0.10.0)(gel@2.1.1)(postgres@3.4.7)
       postgres:
-        specifier: ^3.4.5
+        specifier: ^3.4.7
         version: 3.4.7
       type-fest:
-        specifier: ^4.27.0
+        specifier: ^4.41.0
         version: 4.41.0
       typescript:
-        specifier: ^5.6.3
+        specifier: ^5.8.3
         version: 5.8.3
       zod:
         specifier: ^4
@@ -363,11 +363,11 @@ packages:
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
     engines: {node: '>=6.0.0'}
 
-  '@clack/core@0.3.5':
-    resolution: {integrity: sha512-5cfhQNH+1VQ2xLQlmzXMqUoiaH0lRBq9/CLW9lTyMbuKLC3+xEK01tHVvyut++mLOn5urSHmkm6I0Lg9MaJSTQ==}
+  '@clack/core@0.5.0':
+    resolution: {integrity: sha512-p3y0FIOwaYRUPRcMO7+dlmLh8PSRcrjuTndsiA0WAFbWES0mLZlrjVoBRZ9DzkPFJZG6KGkJmoEAY0ZcVWTkow==}
 
-  '@clack/prompts@0.8.2':
-    resolution: {integrity: sha512-6b9Ab2UiZwJYA9iMyboYyW9yJvAO9V753ZhS+DHKEjZRKAxPPOb7MXXu84lsPFG+vZt6FRFniZ8rXi+zCIw4yQ==}
+  '@clack/prompts@0.11.0':
+    resolution: {integrity: sha512-pMN5FcrEw9hUkZA4f+zLlzivQSeQf5dRGJjSUbvVYDLvpKCdQx5OaknvKzgbtXOizhP+SJJJjqEbOe55uKKfAw==}
 
   '@cloudflare/kv-asset-handler@0.3.4':
     resolution: {integrity: sha512-YLPHc8yASwjNkmcDMQMY35yiWjoKAKnhUbPRszBRS0YgH+IXtsMp61j+yTcnCE3oO2DgP0U3iejLC8FTtKDC8Q==}
@@ -2400,8 +2400,16 @@ packages:
     resolution: {integrity: sha512-Q4sgBT60gzd0BB0lSyYD3xM4YxrXA9y4uBDof1JNYGzOXrQdQ6yX+7XIAqoFOGQFOTK1D3Hts5OllpxMDZFONQ==}
     engines: {node: '>=12'}
 
+  dotenv@17.2.1:
+    resolution: {integrity: sha512-kQhDYKZecqnM0fCnzI5eIv5L4cAe/iRI+HqMbO/hbRdTAeXDG+M9FjipUxNfbARuEg4iHIbhnhs78BCHNbSxEQ==}
+    engines: {node: '>=12'}
+
   drizzle-kit@0.30.6:
     resolution: {integrity: sha512-U4wWit0fyZuGuP7iNmRleQyK2V8wCuv57vf5l3MnG4z4fzNTjY/U13M8owyQ5RavqvqxBifWORaR3wIUzlN64g==}
+    hasBin: true
+
+  drizzle-kit@0.31.4:
+    resolution: {integrity: sha512-tCPWVZWZqWVx2XUsVpJRnH9Mx0ClVOf5YUHerZ5so1OKSlqww4zy1R5ksEdGRcO3tM3zj0PYN6V48TbQCL1RfA==}
     hasBin: true
 
   drizzle-orm@0.39.3:
@@ -2911,10 +2919,6 @@ packages:
   get-source@2.0.12:
     resolution: {integrity: sha512-X5+4+iD+HoSeEED+uwrQ07BOQr0kEDFMVqqpBuI+RaZBpBpHCuXxo70bjar6f0b0u/DQJsJ7ssurpP0V60Az+w==}
 
-  get-stdin@9.0.0:
-    resolution: {integrity: sha512-dVKBjfWisLAicarI2Sf+JuBE/DghV4UzNAVe9yhEJuzeREd3JhOTE9cUaJTeSa77fsbQUK3pcOpJfM59+VKZaA==}
-    engines: {node: '>=12'}
-
   get-stream@9.0.1:
     resolution: {integrity: sha512-kVCxPF3vQM/N0B1PmoqVUqgHP+EeVjmZSQn+1oCRPxd2P21P2F19lIgbR3HBosbB1PUhOAoctJnfEn2GbN2eZA==}
     engines: {node: '>=18'}
@@ -2926,8 +2930,8 @@ packages:
   get-tsconfig@4.10.1:
     resolution: {integrity: sha512-auHyJ4AgMz7vgS8Hp3N6HXSmlMdUyhSUrfBF16w153rxtLIEOE+HGqaBppczZvnHLqQJfiHotCYpNhl0lUROFQ==}
 
-  git-hooks-list@3.2.0:
-    resolution: {integrity: sha512-ZHG9a1gEhUMX1TvGrLdyWb9kDopCBbTnI8z4JgRMYxsijWipgjSEYoPWqBuIB0DnRnvqlQSEeVmzpeuPm7NdFQ==}
+  git-hooks-list@4.1.1:
+    resolution: {integrity: sha512-cmP497iLq54AZnv4YRAEMnEyQ1eIn4tGKbmswqwmFV4GBnAqE8NLtWxxdXa++AalfgL5EBH4IxTPyquEuGY/jA==}
 
   glob-parent@5.1.2:
     resolution: {integrity: sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==}
@@ -2991,6 +2995,10 @@ packages:
 
   hono@4.8.5:
     resolution: {integrity: sha512-Up2cQbtNz1s111qpnnECdTGqSIUIhZJMLikdKkshebQSEBcoUKq6XJayLGqSZWidiH0zfHRCJqFu062Mz5UuRA==}
+    engines: {node: '>=16.9.0'}
+
+  hono@4.8.9:
+    resolution: {integrity: sha512-ERIxkXMRhUxGV7nS/Af52+j2KL60B1eg+k6cPtgzrGughS+espS9KQ7QO0SMnevtmRlBfAcN0mf1jKtO6j/doA==}
     engines: {node: '>=16.9.0'}
 
   human-signals@8.0.1:
@@ -3821,8 +3829,9 @@ packages:
   sort-object-keys@1.1.3:
     resolution: {integrity: sha512-855pvK+VkU7PaKYPc+Jjnmt4EzejQHyhhF33q31qG8x7maDzkeFhAAThdCYay11CISO+qAMwjOBP+fPZe0IPyg==}
 
-  sort-package-json@2.15.1:
-    resolution: {integrity: sha512-9x9+o8krTT2saA9liI4BljNjwAbvUnWf11Wq+i/iZt8nl2UGYnf3TH5uBydE7VALmP7AGwlfszuEeL8BDyb0YA==}
+  sort-package-json@3.4.0:
+    resolution: {integrity: sha512-97oFRRMM2/Js4oEA9LJhjyMlde+2ewpZQf53pgue27UkbEXfHJnDzHlUxQ/DWUkzqmp7DFwJp8D+wi/TYeQhpA==}
+    engines: {node: '>=20'}
     hasBin: true
 
   source-map-js@1.2.1:
@@ -4302,14 +4311,14 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.12
       '@jridgewell/trace-mapping': 0.3.29
 
-  '@clack/core@0.3.5':
+  '@clack/core@0.5.0':
     dependencies:
       picocolors: 1.1.1
       sisteransi: 1.0.5
 
-  '@clack/prompts@0.8.2':
+  '@clack/prompts@0.11.0':
     dependencies:
-      '@clack/core': 0.3.5
+      '@clack/core': 0.5.0
       picocolors: 1.1.1
       sisteransi: 1.0.5
 
@@ -5167,29 +5176,29 @@ snapshots:
 
   '@sec-ant/readable-stream@0.4.1': {}
 
-  '@shapelesss/core@1.0.0(hono@4.8.5)(react@19.1.0)(zod@3.24.1)':
+  '@shapelesss/core@1.0.0(hono@4.8.9)(react@19.1.0)(zod@3.24.1)':
     dependencies:
-      '@shapelesss/shared': 1.0.0(hono@4.8.5)(react@19.1.0)(zod@3.24.1)
-      hono: 4.8.5
+      '@shapelesss/shared': 1.0.0(hono@4.8.9)(react@19.1.0)(zod@3.24.1)
+      hono: 4.8.9
       react: 19.1.0
       zod: 3.24.1
 
-  '@shapelesss/core@1.0.0(hono@4.8.5)(react@19.1.0)(zod@4.0.5)':
+  '@shapelesss/core@1.0.0(hono@4.8.9)(react@19.1.0)(zod@4.0.5)':
     dependencies:
-      '@shapelesss/shared': 1.0.0(hono@4.8.5)(react@19.1.0)(zod@4.0.5)
-      hono: 4.8.5
+      '@shapelesss/shared': 1.0.0(hono@4.8.9)(react@19.1.0)(zod@4.0.5)
+      hono: 4.8.9
       react: 19.1.0
       zod: 4.0.5
 
-  '@shapelesss/shared@1.0.0(hono@4.8.5)(react@19.1.0)(zod@3.24.1)':
+  '@shapelesss/shared@1.0.0(hono@4.8.9)(react@19.1.0)(zod@3.24.1)':
     dependencies:
-      hono: 4.8.5
+      hono: 4.8.9
       react: 19.1.0
       zod: 3.24.1
 
-  '@shapelesss/shared@1.0.0(hono@4.8.5)(react@19.1.0)(zod@4.0.5)':
+  '@shapelesss/shared@1.0.0(hono@4.8.9)(react@19.1.0)(zod@4.0.5)':
     dependencies:
-      hono: 4.8.5
+      hono: 4.8.9
       react: 19.1.0
       zod: 4.0.5
 
@@ -5300,7 +5309,7 @@ snapshots:
   '@types/fs-extra@11.0.4':
     dependencies:
       '@types/jsonfile': 6.1.4
-      '@types/node': 22.16.4
+      '@types/node': 24.1.0
 
   '@types/json-schema@7.0.15': {}
 
@@ -5308,7 +5317,7 @@ snapshots:
 
   '@types/jsonfile@6.1.4':
     dependencies:
-      '@types/node': 22.16.4
+      '@types/node': 24.1.0
 
   '@types/node@22.16.4':
     dependencies:
@@ -5320,7 +5329,7 @@ snapshots:
 
   '@types/pg@8.11.6':
     dependencies:
-      '@types/node': 22.16.4
+      '@types/node': 24.1.0
       pg-protocol: 1.10.3
       pg-types: 4.0.2
 
@@ -5334,7 +5343,7 @@ snapshots:
 
   '@types/ws@8.18.1':
     dependencies:
-      '@types/node': 22.16.4
+      '@types/node': 24.1.0
 
   '@typescript-eslint/eslint-plugin@8.37.0(@typescript-eslint/parser@8.37.0(eslint@9.31.0(jiti@2.4.2))(typescript@5.8.3))(eslint@9.31.0(jiti@2.4.2))(typescript@5.8.3)':
     dependencies:
@@ -5819,6 +5828,8 @@ snapshots:
 
   dotenv@17.2.0: {}
 
+  dotenv@17.2.1: {}
+
   drizzle-kit@0.30.6:
     dependencies:
       '@drizzle-team/brocli': 0.10.2
@@ -5826,6 +5837,15 @@ snapshots:
       esbuild: 0.19.12
       esbuild-register: 3.6.0(esbuild@0.19.12)
       gel: 2.1.1
+    transitivePeerDependencies:
+      - supports-color
+
+  drizzle-kit@0.31.4:
+    dependencies:
+      '@drizzle-team/brocli': 0.10.2
+      '@esbuild-kit/esm-loader': 2.6.5
+      esbuild: 0.25.6
+      esbuild-register: 3.6.0(esbuild@0.25.6)
     transitivePeerDependencies:
       - supports-color
 
@@ -5977,6 +5997,13 @@ snapshots:
     dependencies:
       debug: 4.4.1
       esbuild: 0.19.12
+    transitivePeerDependencies:
+      - supports-color
+
+  esbuild-register@3.6.0(esbuild@0.25.6):
+    dependencies:
+      debug: 4.4.1
+      esbuild: 0.25.6
     transitivePeerDependencies:
       - supports-color
 
@@ -6464,8 +6491,6 @@ snapshots:
       data-uri-to-buffer: 2.0.2
       source-map: 0.6.1
 
-  get-stdin@9.0.0: {}
-
   get-stream@9.0.1:
     dependencies:
       '@sec-ant/readable-stream': 0.4.1
@@ -6481,7 +6506,7 @@ snapshots:
     dependencies:
       resolve-pkg-maps: 1.0.0
 
-  git-hooks-list@3.2.0: {}
+  git-hooks-list@4.1.1: {}
 
   glob-parent@5.1.2:
     dependencies:
@@ -6538,6 +6563,8 @@ snapshots:
       function-bind: 1.1.2
 
   hono@4.8.5: {}
+
+  hono@4.8.9: {}
 
   human-signals@8.0.1: {}
 
@@ -7409,12 +7436,11 @@ snapshots:
 
   sort-object-keys@1.1.3: {}
 
-  sort-package-json@2.15.1:
+  sort-package-json@3.4.0:
     dependencies:
       detect-indent: 7.0.1
       detect-newline: 4.0.1
-      get-stdin: 9.0.0
-      git-hooks-list: 3.2.0
+      git-hooks-list: 4.1.1
       is-plain-obj: 4.1.0
       semver: 7.7.2
       sort-object-keys: 1.1.3

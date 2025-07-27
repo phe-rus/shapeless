@@ -1,4 +1,4 @@
-import appRouter from "@/server"
+import appRouter from "@resources/index"
 import { handle } from "hono/vercel"
 
 // This route catches all incoming API requests and lets your appRouter handle them.

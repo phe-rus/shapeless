@@ -2,11 +2,13 @@ import fs from "fs-extra"
 import path from "node:path"
 
 /**
- * Change structure
+ * Change structure of server to resources
  */
 const filesToIgnore = [
-  "src/server/shapeless.ts",
-  "src/server/routers/post-router.ts",
+  //"src/server/shapeless.ts",
+  //"src/server/routers/post-router.ts",
+  "resources/shapeless.ts",
+  "resources/routers/post-router.ts",
   "drizzle.config.ts",
   "node_modules",
   ".git",

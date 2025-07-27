@@ -17,11 +17,11 @@ export const neonInstaller: Installer = ({ projectDir }) => {
   const configFile = path.join(extrasDir, `config/drizzle-config-neon.ts`)
   const configDest = path.join(projectDir, "drizzle.config.ts")
 
-  const schemaSrc = path.join(extrasDir, "src/server/db/schema", `with-postgres.ts`)
-  const schemaDest = path.join(projectDir, "src/server/db/schema.ts")
+  const schemaSrc = path.join(extrasDir, "resources/db/schema", `with-postgres.ts`)
+  const schemaDest = path.join(projectDir, "resources/db/schema.ts")
 
-  const jstackSrc = path.join(extrasDir, "src/server/jstack", `drizzle-with-neon.ts`)
-  const jstackDest = path.join(projectDir, "src/server/jstack.ts")
+  const jstackSrc = path.join(extrasDir, "resources/shapeless", `drizzle-with-neon.ts`)
+  const jstackDest = path.join(projectDir, "resources/shapeless.ts")
 
   fs.ensureDirSync(path.dirname(configDest))
   fs.ensureDirSync(path.dirname(schemaDest))

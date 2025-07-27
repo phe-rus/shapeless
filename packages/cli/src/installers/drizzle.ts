@@ -20,8 +20,8 @@ export const drizzleInstaller: Installer = ({ projectDir, databaseProvider }) =>
 
   const extrasDir = path.join(PKG_ROOT, "template/extras")
 
-  const routerSrc = path.join(extrasDir, `src/server/routers/post/with-drizzle.ts`)
-  const routerDest = path.join(projectDir, `src/server/routers/post-router.ts`)
+  const routerSrc = path.join(extrasDir, `resources/routers/post/with-drizzle.ts`)
+  const routerDest = path.join(projectDir, `resources/routers/post-router.ts`)
 
   const envSrc = path.join(extrasDir, `config/_env-drizzle`)
   const vercelPostgresEnvSrc = path.join(extrasDir, `config/_env-drizzle-vercel-postgres`)
@@ -42,7 +42,7 @@ export const drizzleInstaller: Installer = ({ projectDir, databaseProvider }) =>
 
   fs.copySync(routerSrc, routerDest)
   fs.copySync(databaseProvider === "vercel-postgres" ? vercelPostgresEnvSrc : envSrc, envDest)
-  
+
   fs.writeJSONSync(packageJsonPath, packageJsonContent, {
     spaces: 2,
   })

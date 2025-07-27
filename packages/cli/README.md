@@ -1,7 +1,3 @@
-Here’s your **complete CLI README** with all the extras:
-
----
-
 # Shapeless CLI – Create a New Shapeless App
 
 A simple CLI for scaffolding new Shapeless apps, inspired by the [T3 Stack CLI](https://create.t3.gg/).
