@@ -1,3 +1,5 @@
+![Project Thumbnail](./shapeless.png)
+
 # Shapeless — Based on Jstack  
 **Build fast, lightweight, and end-to-end typesafe Next.js apps**
 
@@ -7,8 +9,6 @@ Powered by:
 - **Tailwind CSS v4**
 - **OpenNext (for Cloudflare Workers)**
 - **Drizzle ORM**
-
-![Project Thumbnail](./presenetation.png)
 
 ## 🚀 About
 
