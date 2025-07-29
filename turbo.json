@@ -6,7 +6,8 @@
     "globalEnv": [
         "PORT",
         "NODE_ENV",
-        "VERCEL_ENV"
+        "VERCEL_ENV",
+        "GITHUB_TOKEN"
     ],
     "tasks": {
         "build": {
@@ -15,7 +16,11 @@
             ],
             "inputs": [
                 "$TURBO_DEFAULT$",
-                ".env*"
+                ".env*",
+                ".env.production.local",
+                ".env.local",
+                ".env.production",
+                ".env"
             ],
             "outputs": [
                 "dist/**",
@@ -23,7 +28,8 @@
                 "!.next/cache/**"
             ],
             "env": [
-                "NEXT_PUBLIC_*"
+                "NEXT_PUBLIC_*",
+                "GITHUB_TOKEN"
             ],
             "passThroughEnv": [
                 "VERCEL_*",
