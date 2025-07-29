@@ -15,7 +15,7 @@ Shapeless provides an **end-to-end type-safe API client** that knows your entire
 
 Create your API client by passing it the `AppRouter` type from your backend. Adjust the base URL depending on your deployment environment:
 
-```ts lib/shapeless-client.ts
+```ts src/app/shapeless-client.ts
 import { createClient } from "@shapelesss/core"
 import type { AppRouter } from "@/server"
 
@@ -36,7 +36,7 @@ function getBaseUrl() {
 Use the client anywhere in your app with full type safety. Here’s a simple example calling a `post.recent` endpoint:
 
 ```ts
-import { client } from "@/lib/shapeless-client"
+import { client } from "@/shapeless-client"
 
 const res = await client.post.recent.$get()
 const post = await res.json()
@@ -52,7 +52,7 @@ Because the client is just a typed `fetch` wrapper, you can use it with **any** 
 ```tsx
 "use client"
 
-import { client } from "@/lib/shapeless-client"
+import { client } from "@/shapeless-client"
 import { useQuery } from "@tanstack/react-query"
 
 export default function Page() {

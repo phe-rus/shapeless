@@ -16,13 +16,15 @@ Since Shapeless builds on Hono, you can deploy this router anywhere — Cloudfla
 
 ```plaintext
 application/
-  └── server/
+  └── resources/
       ├── shapeless.ts       # Initialize Shapeless
       ├── index.ts           # Main appRouter
       └── routers/           # API routers
           ├── post-router.ts
           ├── user-router.ts
-          └── ...
+          └──
+  ────src/
+      |── app
 ```
 
 ---
@@ -31,7 +33,7 @@ application/
 
 Start by creating a base `api` router with global config like base path, CORS, and error handling.
 
-```ts server/index.ts {4,11}
+```ts resources/index.ts {4,11}
 import { app } from "./shapeless"
 import { postRouter } from "./routers/post-router"
 
@@ -70,7 +72,7 @@ Common options you’ll use:
 
 Use `app.defaults.errorHandler` for standardized API error responses:
 
-```ts server/index.ts {7}
+```ts resources/index.ts {7}
 const api = app
   .router()
   .basePath("/api")

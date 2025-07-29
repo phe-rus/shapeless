@@ -14,7 +14,7 @@ Middleware in Shapeless lets you add reusable logic that runs between procedure 
 ## Basic Middleware Structure
 
 ```ts
-// server/shapeless.ts
+// resources/shapeless.ts
 const myMiddleware = app.middleware(async ({ c, next }) => {
   // 1️⃣ Code that runs before the handler
   // ...
@@ -33,7 +33,7 @@ const myMiddleware = app.middleware(async ({ c, next }) => {
 This middleware ensures the user is authenticated before proceeding. If not authenticated, it throws an error and blocks the procedure:
 
 ```ts
-// server/shapeless.ts
+// resources/shapeless.ts
 import { HTTPException } from "hono/http-exception"
 import { shapeless } from "@shapelesss/core"
 
@@ -64,7 +64,7 @@ export const privateProcedure = publicProcedure.use(authMiddleware)
 Now, in any `privateProcedure`, you can safely access the user info:
 
 ```ts
-// server/routers/post-router.ts
+// resources/routers/post-router.ts
 import { app, privateProcedure } from "../shapeless"
 
 export const postRouter = app.router({
@@ -93,7 +93,7 @@ const enhancedProcedure = publicProcedure
 If middleware depends on previous middleware outputs, use Shapeless’s type inference utility to type `ctx` correctly:
 
 ```ts
-// server/shapeless.ts
+// resources/shapeless.ts
 import { InferMiddlewareOutput, shapeless } from "@shapelesss/core"
 
 interface Env {

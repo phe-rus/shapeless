@@ -18,7 +18,7 @@ To further improve your app's performance, Shapeless supports **dynamic router a
 Use the `dynamic()` helper to load routers only when needed. This keeps your initial bundle small and reduces cold start time:
 
 ```ts
-// server/shapeless.ts
+// resources/shapeless.ts
 import { app, dynamic } from "@shapelesss/core"
 
 const api = app
@@ -43,7 +43,7 @@ export default appRouter
 You can also do dynamic imports inside your procedure handlers to split code and defer loading of heavy dependencies until actually needed:
 
 ```ts
-// server/routers/user-router.ts
+// resources/routers/user-router.ts
 import { app, publicProcedure } from "../shapeless"
 
 export const userRouter = app.router({

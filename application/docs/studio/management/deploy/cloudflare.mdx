@@ -13,6 +13,8 @@ Shapeless can be deployed to Cloudflare Workers, giving you a globally distribut
 
 ## Prerequisites
 
+Everything is mostly setup and no need to actually set up much
+
 1. Install the [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/):
 
 ```bash
@@ -50,8 +52,8 @@ These scripts wrap Wrangler but also run the Next.js build process required for 
 After deployment, update your API client to point to your deployed Worker URL:
 
 ```ts
-// lib/client.ts
-import type { AppRouter } from "@/server"
+// @/shapeless.client.ts
+import type { AppRouter } from "@/resources/index"
 import { createClient } from "shapeless"
 
 export const client = createClient<AppRouter>({
@@ -87,7 +89,7 @@ For bulk updates, see [Wrangler secret bulk commands](https://developers.cloudfl
 If you experience CORS problems, verify your Worker is configured with CORS middleware correctly:
 
 ```ts
-// server/index.ts
+// resources/index.ts
 import { app } from "./shapeless"
 import { postRouter } from "./routers/post-router"
 

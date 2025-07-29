@@ -14,14 +14,13 @@ In Shapeless, a **procedure** is an API endpoint that handles a specific operati
 - `ws` (WebSocket) procedures for real-time communication
 
 ```plaintext
-app/
-  └── server/
-      ├── shapeless.ts      # Initialize Shapeless
-      ├── index.ts          # Main appRouter
-      └── routers/          # Router directory
-          ├── user-router.ts
-          ├── post-router.ts
-          └── payment-router.ts
+resources/
+  ├── shapeless.ts      # Initialize Shapeless
+  ├── index.ts          # Main appRouter
+  └── routers/          # Router directory
+    ├── user-router.ts
+    ├── post-router.ts
+    └── payment-router.ts
 ```
 
 For simplicity, define your procedures and middleware inside `shapeless.ts`. You can split into separate files if you prefer.
@@ -33,7 +32,7 @@ For simplicity, define your procedures and middleware inside `shapeless.ts`. You
 Shapeless provides a `publicProcedure` by default that anyone (authenticated or not) can call. You can build on this to create protected procedures with middleware.
 
 ```ts
-// server/shapeless.ts
+// resources/shapeless.ts
 import { shapeless } from "@shapelesss/core"
 
 interface Env {
@@ -56,7 +55,7 @@ export const publicProcedure = app.procedure
 Here’s how to create a procedure that only authenticated users can access:
 
 ```ts
-// server/shapeless.ts
+// resources/shapeless.ts
 import { HTTPException } from "hono/http-exception"
 import { shapeless } from "@shapelesss/core"
 
@@ -89,7 +88,7 @@ export const privateProcedure = publicProcedure.use(authMiddleware)
 ### Using the Private Procedure
 
 ```ts
-// server/routers/post-router.ts
+// resources/routers/post-router.ts
 import { app, privateProcedure } from "../shapeless"
 
 export const postRouter = app.router({
@@ -108,7 +107,7 @@ Now only authenticated users can call `/api/post/list`. Unauthenticated requests
 `GET` procedures read data and accept input via query parameters:
 
 ```ts
-// server/routers/post-router.ts
+// resources/routers/post-router.ts
 import { app, publicProcedure } from "../shapeless"
 
 export const postRouter = app.router({
@@ -125,7 +124,7 @@ export const postRouter = app.router({
 Call from the client with:
 
 ```ts
-import { client } from "@/lib/shapeless-client"
+import { client } from "@/shapeless-client"
 
 const res = await client.post.recent.$get()
 ```
@@ -137,7 +136,7 @@ const res = await client.post.recent.$get()
 `POST` procedures modify data and accept input via request body:
 
 ```ts
-// server/routers/post-router.ts
+// resources/routers/post-router.ts
 import { app, publicProcedure } from "../shapeless"
 
 export const postRouter = app.router({
@@ -150,7 +149,7 @@ export const postRouter = app.router({
 Call from the client with:
 
 ```ts
-import { client } from "@/lib/shapeless-client"
+import { client } from "@/shapeless-client"
 
 const res = await client.post.create.$post()
 ```
@@ -162,7 +161,7 @@ const res = await client.post.create.$post()
 Shapeless uses [Zod](https://zod.dev/) for input validation. Define schemas with `.input()`:
 
 ```ts
-// server/routers/post-router.ts
+// resources/routers/post-router.ts
 import { z } from "zod"
 import { app, publicProcedure } from "../shapeless"
 
@@ -181,7 +180,7 @@ Invalid input automatically triggers your global error handler.
 Calling from the client enforces input types:
 
 ```ts
-import { client } from "@/lib/shapeless-client"
+import { client } from "@/shapeless-client"
 
 await client.post.create.$post({ title: "My new post" })
 ```
@@ -193,7 +192,7 @@ await client.post.create.$post({ title: "My new post" })
 For real-time features, use WebSocket procedures with `.ws()` and schemas for incoming/outgoing events:
 
 ```ts
-// server/routers/post-router.ts
+// resources/routers/post-router.ts
 import { app, publicProcedure } from "../shapeless"
 import { z } from "zod"
 

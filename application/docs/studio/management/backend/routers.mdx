@@ -14,24 +14,23 @@ A router in Shapeless is a **collection of procedures** (API endpoints) grouped 
 - `paymentRouter` for payments
 
 ```plaintext
-app/
-  └── server/
-      ├── shapeless.ts       # Initialize Shapeless
-      ├── index.ts           # Main appRouter
-      └── routers/           # Router directory
-          ├── user-router.ts
-          ├── post-router.ts
-          └── payment-router.ts
+resources/
+  ├── shapeless.ts       # Initialize Shapeless
+  ├── index.ts           # Main appRouter
+  └── routers/           # Router directory
+    ├── user-router.ts
+    ├── post-router.ts
+    └── payment-router.ts
 ```
 
 ---
 
 ## Creating a Router
 
-1. Create a new router file in `server/routers`:
+1. Create a new router file in `resources/routers`:
 
 ```ts
-// server/routers/post-router.ts
+// resources/routers/post-router.ts
 import { app } from "../shapeless"
 
 export const postRouter = app.router({
@@ -42,7 +41,7 @@ export const postRouter = app.router({
 2. Add procedures to your router:
 
 ```ts
-// server/routers/post-router.ts
+// resources/routers/post-router.ts
 import { app, publicProcedure } from "../shapeless"
 
 export const postRouter = app.router({
@@ -59,7 +58,7 @@ export const postRouter = app.router({
 3. Register your router in the main `appRouter`:
 
 ```ts
-// server/index.ts
+// resources/index.ts
 import { app } from "./shapeless"
 import { postRouter } from "./routers/post-router"
 

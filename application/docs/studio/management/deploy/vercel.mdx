@@ -17,7 +17,7 @@ author: "Pherus"
 
    Update your API client to use the correct URL depending on environment:
 
-   ```ts lib/client.ts {5,9-17}
+   ```ts @/shapeless.client.ts {5,9-17}
    import type { AppRouter } from "@/server"
    import { createClient } from "shapeless"
 
@@ -76,7 +76,7 @@ vercel env add <KEY>
 If you face CORS errors, ensure your API router includes CORS middleware:
 
 ```ts
-// server/index.ts
+// resources/index.ts
 import { app } from "./shapeless"
 import { postRouter } from "./routers/post-router"
 

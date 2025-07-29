@@ -42,7 +42,7 @@ WebSockets are great for things like:
 Here’s a simple chat example that validates messages and broadcasts them to all clients in a room:
 
 ```ts
-// server/routers/chat-router.ts
+// resources/routers/chat-router.ts
 import { z } from "zod"
 import { app } from "../shapeless"
 
@@ -76,7 +76,7 @@ On the client, you can listen for and send real-time events like this:
 ```tsx
 "use client"
 
-import { client } from "@/lib/client"
+import { client } from "@/shapeless.client.ts"
 import { useWebSocket } from "shapeless/client"
 
 const socket = client.post.chat.$ws()
@@ -121,16 +121,16 @@ UPSTASH_REDIS_REST_URL=
 UPSTASH_REDIS_REST_TOKEN=
 ```
 
-3. Run your backend locally with:
+3. Run your opennext locally with:
 
 ```bash
-wrangler dev
+pnpm cf:preview
 ```
 
 4. Point your client’s `baseUrl` to the Worker backend on port `8080`:
 
 ```ts
-import type { AppRouter } from "@/server"
+import type { AppRouter } from "@/resources/index"
 import { createClient } from "shapeless"
 
 export const client = createClient<AppRouter>({
@@ -142,10 +142,10 @@ export const client = createClient<AppRouter>({
 
 ### Deployment
 
-1. Deploy your backend to Cloudflare Workers:
+1. Deploy to Cloudflare Workers:
 
 ```bash
-wrangler deploy src/server/index.ts
+pnpm cf:deploy
 ```
 
 2. Set your Redis env vars in Workers:
