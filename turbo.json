@@ -4,7 +4,9 @@
         "**/.env.*local"
     ],
     "globalEnv": [
-        "PORT"
+        "PORT",
+        "NODE_ENV",
+        "VERCEL_ENV"
     ],
     "tasks": {
         "build": {
@@ -19,6 +21,13 @@
                 "dist/**",
                 ".next/**",
                 "!.next/cache/**"
+            ],
+            "env": [
+                "NEXT_PUBLIC_*"
+            ],
+            "passThroughEnv": [
+                "VERCEL_*",
+                "NEXT_*"
             ]
         },
         "test": {
