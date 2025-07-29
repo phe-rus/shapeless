@@ -25,11 +25,5 @@
       "database_id": "replacewithyourown",
       "migrations_dir": "./drizzle"
     }
-  ],
-  "r2_buckets": [
-    {
-      "bucket_name": "replacewithyourown",
-      "binding": "R2"
-    }
   ]
 }

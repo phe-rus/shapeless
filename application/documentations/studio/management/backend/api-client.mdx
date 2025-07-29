@@ -1,0 +1,77 @@
+---
+title: API Client
+summary: Using the type-safe API client in Shapeless
+date: 2024-09-25
+author: "Pherus"
+---
+
+# Type-Safe API Client
+
+Shapeless provides an **end-to-end type-safe API client** that knows your entire backend router. This means TypeScript can infer exactly what your API expects and returns, helping you catch errors early.
+
+---
+
+## 1. Client Setup
+
+Create your API client by passing it the `AppRouter` type from your backend. Adjust the base URL depending on your deployment environment:
+
+```ts lib/shapeless-client.ts
+import { createClient } from "@shapelesss/core"
+import type { AppRouter } from "@/server"
+
+export const client = createClient<AppRouter>({
+  baseUrl: getBaseUrl() + "/api",
+})
+
+function getBaseUrl() {
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
+  return "http://localhost:3000"
+}
+```
+
+---
+
+## 2. Making API Calls
+
+Use the client anywhere in your app with full type safety. Here’s a simple example calling a `post.recent` endpoint:
+
+```ts
+import { client } from "@/lib/shapeless-client"
+
+const res = await client.post.recent.$get()
+const post = await res.json()
+// TypeScript infers the exact response shape here
+```
+
+---
+
+## 3. Using with React Query
+
+Because the client is just a typed `fetch` wrapper, you can use it with **any** state management or data fetching library. For example, with React Query:
+
+```tsx
+"use client"
+
+import { client } from "@/lib/shapeless-client"
+import { useQuery } from "@tanstack/react-query"
+
+export default function Page() {
+  const { data, isLoading } = useQuery({
+    queryKey: ["post-recent"],
+    queryFn: async () => {
+      const res = await client.post.recent.$get()
+      return await res.json()
+    },
+  })
+
+  if (isLoading) return <p>Loading...</p>
+
+  return <h1>{data.title}</h1>
+}
+```
+
+You can swap React Query for Zustand, Jotai, Redux, or anything else — it just works.
+
+---
+
+This type-safe client keeps your frontend and backend tightly integrated, reducing bugs and improving DX.

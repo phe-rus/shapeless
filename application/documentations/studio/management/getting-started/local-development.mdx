@@ -1,0 +1,155 @@
+---
+title: Local Development
+summary: Run Shapeless locally using either Next.js or Cloudflare Workers via OpenNextJS
+date: 2024-09-25
+author: "Pherus"
+---
+
+# Local Development
+
+Shapeless uses **OpenNextJS** to support full monolithic deployment to Cloudflare Workers. That means you can develop locally using either the regular Next.js dev server, or emulate the actual Cloudflare environment—all from a single process.
+
+---
+
+## 🚀 Standard Dev Mode (Node.js)
+
+Start the app with:
+
+```bash
+pnpm dev
+# or
+bun dev
+# or
+npm run dev
+```
+
+This runs the regular Next.js development server on:
+
+```
+http://localhost:3000
+```
+
+It uses Node.js, so it's fast and has full support for React features like HMR, fast refresh, etc.
+
+Use this when you're building UI and want a quick feedback loop.
+
+---
+
+## 🌐 Cloudflare Workers Preview Mode
+
+To test how your app will behave on Cloudflare (with the Workers runtime and bindings like `D1`, `R2`, etc.), run:
+
+```bash
+pnpm run cf:gen   # optional, generates env typings
+pnpm run cf:preview
+```
+
+This starts your app in **Cloudflare Workers preview mode**:
+
+```
+http://localhost:8788
+```
+
+This simulates the production environment using Wrangler and OpenNextJS.
+
+> This mode is recommended when you need to test Cloudflare-specific behavior like:
+>
+> - Worker compatibility (`globalThis`, fetch, etc.)
+> - Database bindings (D1)
+> - Storage bindings (R2)
+> - Compatibility flags (`nodejs_compat`, etc.)
+
+---
+
+## ✅ API Client Config
+
+Update your API client to match the preview mode when needed:
+
+```ts
+// src/shapeless.client.ts
+export const client = createClient<AppRouter>({
+  baseUrl: "http://localhost:8788/api", // if using cf:preview
+})
+```
+
+You can also make this dynamic with an `.env.local`:
+
+```ts
+baseUrl: process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000/api"
+```
+
+And then in `.env.local`:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8788/api
+```
+
+---
+
+## 🛠 Available Scripts
+
+From your `package.json`:
+
+```json
+{
+  "dev": "next dev",
+  "cf:preview": "opennextjs-cloudflare preview",
+  "cf:build": "opennextjs-cloudflare build",
+  "cf:upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
+  "cf:gen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+}
+```
+
+- `dev`: regular Next.js dev server (Node.js)
+- `cf:preview`: run app on local Cloudflare worker runtime
+- `cf:build`: compile the app for Workers
+- `cf:upload`: deploy to production Cloudflare
+- `cf:gen`: generate Cloudflare bindings types
+
+---
+
+## 🧪 When to Use Each Mode
+
+<table className="w-full border border-muted text-left text-sm">
+  <thead className="bg-muted/20">
+    <tr>
+      <th className="p-3 font-medium border-b border-muted">Goal</th>
+      <th className="p-3 font-medium border-b border-muted">
+        <code>pnpm dev</code>
+      </th>
+      <th className="p-3 font-medium border-b border-muted">
+        <code>pnpm cf:preview</code>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr className="border-b border-muted">
+      <td className="p-3 text-muted-foreground">Building UI quickly</td>
+      <td className="p-3">✅</td>
+      <td className="p-3">✅</td>
+    </tr>
+    <tr className="border-b border-muted">
+      <td className="p-3 text-muted-foreground">Testing D1 / R2 bindings</td>
+      <td className="p-3">✅</td>
+      <td className="p-3">✅</td>
+    </tr>
+    <tr className="border-b border-muted">
+      <td className="p-3 text-muted-foreground">
+        Emulating production behavior
+      </td>
+      <td className="p-3">✅</td>
+      <td className="p-3">✅</td>
+    </tr>
+    <tr>
+      <td className="p-3 text-muted-foreground">Debugging layout / React</td>
+      <td className="p-3">✅</td>
+      <td className="p-3">✅</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+That’s it — no dual terminal setup, no separate backend.
+
+**Shapeless + OpenNext = monolithic, edge-ready development, with full support for both Next.js DX and Cloudflare production behavior.**

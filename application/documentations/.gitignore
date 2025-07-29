@@ -41,3 +41,8 @@ next-env.d.ts
 
 # wrangler
 .wrangler
+.content-collections
+.turbo
+.open-next
+DS_Store
+drizzle

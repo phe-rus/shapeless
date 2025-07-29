@@ -4,8 +4,8 @@ import Image from "next/image"
 
 export default async function Home() {
   return (
-    <div className="flex flex-col gap-5 py-20">
-      <div className="container">
+    <div className="flex flex-col gap-5 py-32 md:py-44">
+      <div className="container flex items-center justify-center mx-auto w-full">
         <div className="flex flex-col md:max-w-5xl">
           <h1
             className={cn(

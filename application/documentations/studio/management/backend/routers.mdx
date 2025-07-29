@@ -1,0 +1,94 @@
+---
+title: Routers
+summary: Routers in Shapeless
+date: 2024-09-25
+author: "Pherus"
+---
+
+# About Routers
+
+A router in Shapeless is a **collection of procedures** (API endpoints) grouped by feature or resource. For example:
+
+- `userRouter` for user management
+- `postRouter` for blog posts
+- `paymentRouter` for payments
+
+```plaintext
+app/
+  └── server/
+      ├── shapeless.ts       # Initialize Shapeless
+      ├── index.ts           # Main appRouter
+      └── routers/           # Router directory
+          ├── user-router.ts
+          ├── post-router.ts
+          └── payment-router.ts
+```
+
+---
+
+## Creating a Router
+
+1. Create a new router file in `server/routers`:
+
+```ts
+// server/routers/post-router.ts
+import { app } from "../shapeless"
+
+export const postRouter = app.router({
+  // Add procedures here
+})
+```
+
+2. Add procedures to your router:
+
+```ts
+// server/routers/post-router.ts
+import { app, publicProcedure } from "../shapeless"
+
+export const postRouter = app.router({
+  list: publicProcedure.get(({ c }) => {
+    return c.json({ posts: [] })
+  }),
+
+  create: publicProcedure.post(({ c }) => {
+    return c.json({ success: true })
+  }),
+})
+```
+
+3. Register your router in the main `appRouter`:
+
+```ts
+// server/index.ts
+import { app } from "./shapeless"
+import { postRouter } from "./routers/post-router"
+
+const api = app
+  .router()
+  .basePath("/api")
+  .use(app.defaults.cors)
+  .onError(app.defaults.errorHandler)
+
+const appRouter = app.mergeRouters(api, {
+  post: postRouter,
+})
+
+export type AppRouter = typeof appRouter
+export default appRouter
+```
+
+---
+
+## Route URLs
+
+Each procedure maps to an HTTP endpoint combining:
+
+- Your API base path (`/api`)
+- The router name (`post`)
+- The procedure name (`list`)
+
+For example, the `list` procedure is available at:
+
+```
+http://localhost:3000/api/post/list
+```
