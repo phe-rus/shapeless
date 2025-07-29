@@ -1,7 +1,7 @@
 import { allManagements } from "content-collections"
 import type { MetadataRoute } from "next"
 
-const BASE_URL = "https://shapeless.pherus.orgjstack.app"
+const BASE_URL = "https://shapeless.pherus.org"
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const paths = allManagements.map((doc) => `${BASE_URL}/docs/${doc._meta.path}`)
