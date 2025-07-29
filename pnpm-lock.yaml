@@ -18,7 +18,7 @@ importers:
         specifier: latest
         version: 5.8.3
 
-  application/documentations:
+  application/docs:
     dependencies:
       '@mdx-js/loader':
         specifier: ^3.1.0
