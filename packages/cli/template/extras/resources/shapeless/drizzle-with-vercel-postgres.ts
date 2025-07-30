@@ -11,7 +11,7 @@ export const app = shapeless.init<Env>()
 /**
  * Type-safely injects database into all procedures
  * 
- * @see https://jstack.app/docs/backend/middleware
+ * @see https://shapeless.pherus.org/docs/backend/middleware
  */
 const databaseMiddleware = app.middleware(async ({ next }) => {
   // automatically reads POSTGRES_URL environment variable

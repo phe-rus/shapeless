@@ -10,7 +10,7 @@ export const app = shapeless.init<Env>()
 
 /**
  * Type-safely injects database into all procedures
- * @see https://jstack.app/docs/backend/middleware
+ * @see https://shapeless.pherus.org/docs/backend/middleware
  * 
  * For deployment to Cloudflare Workers
  * @see https://developers.cloudflare.com/workers/tutorials/postgres/

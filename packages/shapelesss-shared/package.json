@@ -38,7 +38,6 @@
   "author": "Pherus",
   "license": "ISC",
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20241218.0",
     "@types/node": "^24",
     "dotenv": "^17",
     "hono": "^4",

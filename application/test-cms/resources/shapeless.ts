@@ -12,7 +12,7 @@ export const app = shapeless.init<Env>()
 /**
  * Type-safely injects database into all procedures
  * 
- * @see https://shapeless.pherus.org/docs/backend/middleware
+ * @see https://jstack.app/docs/backend/middleware
  */
 const databaseMiddleware = app.middleware(async ({ c, next }) => {
   const { DATABASE_URL } = env(c)
