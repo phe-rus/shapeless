@@ -5,6 +5,7 @@
   "main": "dist/server/index.js",
   "module": "dist/server/index.mjs",
   "devDependencies": {
+    "@cloudflare/workers-types": "^4",
     "@types/node": "^24",
     "@types/react": "^19",
     "chalk": "^5",

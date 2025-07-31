@@ -1,33 +1,41 @@
 import chalk from "chalk"
 import ora from "ora"
 
-import { type InstallerOptions, type InstallerMap } from "@/installers/index.js"
+import { type InstallerOptions } from "@/installers/index.js"
 import { logger } from "@/utils/logger.js"
 
-type InstallPackagesOptions = InstallerOptions
+const installPackageGroup = (
+  groupName: string,
+  packages: Record<string, { inUse: boolean; installer: (opts: InstallerOptions) => void }>,
+  options: InstallerOptions
+): void => {
+  for (const [name, pkgOpts] of Object.entries(packages)) {
+    if (!pkgOpts.inUse) continue
 
-// This runs the installer for all the packages that the user has selected
-export const installPackages = (options: InstallPackagesOptions) => {
+    const spinner = ora(`Setting up ${groupName}: ${name}...`).start()
+
+    try {
+      pkgOpts.installer(options)
+      spinner.succeed(chalk.green(`Successfully configured ${groupName}: ${chalk.bold(name)}`))
+    } catch (error) {
+      spinner.fail(`Failed to configure ${groupName}: ${name}`)
+      throw error
+    }
+  }
+}
+
+export const installPackages = (options: InstallerOptions): void => {
   const { installers } = options
+
   logger.info("Adding boilerplate...")
 
-  // Handle ORM installers
-  for (const [name, pkgOpts] of Object.entries(installers.orm)) {
-    if (pkgOpts.inUse) {
-      const spinner = ora(`Boilerplating ORM: ${name}...`).start()
-      pkgOpts.installer(options)
-      spinner.succeed(chalk.green(`Successfully setup boilerplate for ORM: ${chalk.green.bold(name)}`))
-    }
-  }
+  try {
+    installPackageGroup("ORM", installers.orm, options)
+    installPackageGroup("provider", installers.provider, options)
+    logger.success("Boilerplate setup completed!")
 
-  // Handle provider installers
-  for (const [name, pkgOpts] of Object.entries(installers.provider)) {
-    if (pkgOpts.inUse) {
-      const spinner = ora(`Boilerplating provider: ${name}...`).start()
-      pkgOpts.installer(options)
-      spinner.succeed(chalk.green(`Successfully setup boilerplate for provider: ${chalk.green.bold(name)}`))
-    }
+  } catch (error) {
+    logger.error("Failed to install packages")
+    throw error
   }
-
-  logger.info("")
 }

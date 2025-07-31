@@ -1,78 +1,85 @@
-import { getUserPkgManager, PackageManager } from "@/utils/get-user-pkg-manager.js"
+import { getUserPkgManager, type PackageManager } from "@/utils/get-user-pkg-manager.js"
 import { logger } from "@/utils/logger.js"
 import chalk from "chalk"
 import { execa, type Options } from "execa"
 import ora, { type Ora } from "ora"
 
+interface ExecWithSpinnerOptions {
+  args?: string[]
+  stdout?: Options["stdout"]
+  onDataHandle?: (spinner: Ora) => (data: Buffer) => void
+}
+
 const execWithSpinner = async (
   projectDir: string,
   pkgManager: PackageManager,
-  options: {
-    args?: string[]
-    stdout?: Options["stdout"]
-    onDataHandle?: (spinner: Ora) => (data: Buffer) => void
-  }
-) => {
+  options: ExecWithSpinnerOptions = {}
+): Promise<Ora> => {
   const { onDataHandle, args = ["install"], stdout = "pipe" } = options
 
   const spinner = ora(`Running ${pkgManager} install...`).start()
-  const subprocess = execa(pkgManager, args, { cwd: projectDir, stdout })
 
-  await new Promise<void>((res, rej) => {
-    if (onDataHandle) {
-      subprocess.stdout?.on("data", onDataHandle(spinner))
+  try {
+    const subprocess = execa(pkgManager, args, { cwd: projectDir, stdout })
+
+    if (onDataHandle && subprocess.stdout) {
+      subprocess.stdout.on("data", onDataHandle(spinner))
     }
 
-    void subprocess.on("error", (e) => rej(e))
-    void subprocess.on("close", () => res())
-  })
+    await subprocess
+    return spinner
 
-  return spinner
+  } catch (error) {
+    spinner.fail(`Failed to run ${pkgManager} install`)
+    throw error
+  }
 }
 
-const runInstallCommand = async (pkgManager: PackageManager, projectDir: string): Promise<Ora | null> => {
-  switch (pkgManager) {
-    // When using npm, inherit the stderr stream so that the progress bar is shown
-    case "npm":
+const getInstallStrategy = (pkgManager: PackageManager) => {
+  const strategies = {
+    npm: async (projectDir: string) => {
       await execa(pkgManager, ["install"], {
         cwd: projectDir,
         stderr: "inherit",
       })
-
       return null
+    },
 
-    // When using yarn or pnpm, use the stdout stream and ora spinner to show the progress
-    case "pnpm":
-      return execWithSpinner(projectDir, pkgManager, {
-        onDataHandle: (spinner) => (data) => {
-          const text = data.toString()
+    pnpm: (projectDir: string) => execWithSpinner(projectDir, pkgManager, {
+      onDataHandle: (spinner) => (data) => {
+        const text = data.toString()
+        if (text.includes("Progress")) {
+          spinner.text = text.includes("|") ? (text.split(" | ")[1] ?? "") : text
+        }
+      },
+    }),
 
-          if (text.includes("Progress")) {
-            spinner.text = text.includes("|") ? (text.split(" | ")[1] ?? "") : text
-          }
-        },
-      })
+    yarn: (projectDir: string) => execWithSpinner(projectDir, pkgManager, {
+      onDataHandle: (spinner) => (data) => {
+        spinner.text = data.toString()
+      },
+    }),
 
-    case "yarn":
-      return execWithSpinner(projectDir, pkgManager, {
-        onDataHandle: (spinner) => (data) => {
-          spinner.text = data.toString()
-        },
-      })
-
-    // When using bun, the stdout stream is ignored and the spinner is shown
-    case "bun":
-      return execWithSpinner(projectDir, pkgManager, { stdout: "ignore" })
+    bun: (projectDir: string) => execWithSpinner(projectDir, pkgManager, {
+      stdout: "ignore"
+    }),
   }
+
+  return strategies[pkgManager]
 }
 
-export const installDependencies = async ({ projectDir }: { projectDir: string }) => {
+export const installDependencies = async ({ projectDir }: { projectDir: string }): Promise<void> => {
   logger.info("Installing dependencies...")
+
   const pkgManager = getUserPkgManager()
+  const installStrategy = getInstallStrategy(pkgManager)
 
-  const installSpinner = await runInstallCommand(pkgManager, projectDir)
+  try {
+    const spinner = await installStrategy(projectDir)
+      ; (spinner ?? ora()).succeed(chalk.green("Successfully installed dependencies!"))
 
-  // If the spinner was used to show the progress, use succeed method on it
-  // If not, use the succeed on a new spinner
-  ;(installSpinner ?? ora()).succeed(chalk.green("Successfully installed dependencies!\n"))
+  } catch (error) {
+    logger.error("Failed to install dependencies")
+    throw error
+  }
 }

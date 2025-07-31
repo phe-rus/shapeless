@@ -17,6 +17,7 @@
     "outDir": "./dist",
     "noEmit": true,
     "types": [
+      "@cloudflare/workers-types",
       "@types/node"
     ],
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
