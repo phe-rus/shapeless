@@ -1,0 +1,3 @@
+MONGODB_URI=your_mongodb_atlas_connection_string_here
+MONGODB_DATABASE_NAME=PLACEHOLDER_DATABASE_NAME
+NODE_ENV=development

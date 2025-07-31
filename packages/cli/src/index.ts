@@ -25,6 +25,33 @@ const updateProjectConfig = (projectDir: string, projectName: string, provider?:
       fs.writeJSONSync(wranglerJsonPath, wranglerJson, { spaces: 2 })
     }
   }
+
+  // Update MongoDB configuration files with project name
+  if (provider?.startsWith("mongodb")) {
+    // Update .env file with project-specific database name
+    const envPath = path.join(projectDir, ".env")
+    if (fs.existsSync(envPath)) {
+      let envContent = fs.readFileSync(envPath, "utf-8")
+      envContent = envContent.replace(
+        /MONGODB_DATABASE_NAME=.*/,
+        `MONGODB_DATABASE_NAME=${projectName.replace(/[^a-zA-Z0-9]/g, "_")}`
+      )
+      fs.writeFileSync(envPath, envContent)
+    }
+
+    // Update docker-compose.yml for local MongoDB
+    if (provider === "mongodb-local") {
+      const dockerComposePath = path.join(projectDir, "docker-compose.yml")
+      if (fs.existsSync(dockerComposePath)) {
+        let dockerComposeContent = fs.readFileSync(dockerComposePath, "utf-8")
+        dockerComposeContent = dockerComposeContent.replace(
+          /container_name: .*/,
+          `container_name: ${projectName}-mongodb`
+        )
+        fs.writeFileSync(dockerComposePath, dockerComposeContent)
+      }
+    }
+  }
 }
 
 const main = async (): Promise<void> => {

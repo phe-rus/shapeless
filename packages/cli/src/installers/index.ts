@@ -6,16 +6,19 @@ import { noOrmInstaller } from "./no-orm.js"
 import { postgresInstaller } from "./postgres.js"
 import { vercelPostgresInstaller } from "./vercel-postgres.js"
 import { planetscaleInstaller } from "./planetscale.js"
+import { mongodbLocalInstaller } from "./mongodb-local.js"
+import { mongooseInstaller } from "./mongoose.js"
+import { mongodbAtlasInstaller } from "./mongodb-atlas.js"
 
 // Turning this into a const allows the list to be iterated over for programmatically creating prompt options
 // Should increase extensibility in the future
-export const orms = ["none", "drizzle"] as const
+export const orms = ["none", "drizzle", "mongoose"] as const
 export type Orm = (typeof orms)[number]
 
-export const dialects = ["postgres", "sqlite"] as const
+export const dialects = ["postgres", "sqlite", "mongodb"] as const
 export type Dialect = (typeof dialects)[number]
 
-export const providers = ["postgres", "neon", "d1-http", "vercel-postgres", "planetscale"] as const
+export const providers = ["postgres", "neon", "d1-http", "vercel-postgres", "planetscale", "mongodb-local", "mongodb-atlas"] as const
 export type Provider = (typeof providers)[number]
 
 export type InstallerMap = {
@@ -58,6 +61,10 @@ export const buildInstallerMap = (
       inUse: selectedOrm === "drizzle",
       installer: drizzleInstaller,
     },
+    mongoose: {
+      inUse: selectedOrm == "mongoose",
+      installer: mongooseInstaller
+    }
   },
   provider: {
     postgres: {
@@ -75,6 +82,14 @@ export const buildInstallerMap = (
     "vercel-postgres": {
       inUse: selectedProvider === "vercel-postgres",
       installer: vercelPostgresInstaller,
+    },
+    "mongodb-atlas": {
+      inUse: selectedProvider === "mongodb-atlas",
+      installer: mongodbAtlasInstaller
+    },
+    "mongodb-local": {
+      inUse: selectedProvider === "mongodb-local",
+      installer: mongodbLocalInstaller
     },
     planetscale: {
       inUse: selectedProvider === "planetscale",

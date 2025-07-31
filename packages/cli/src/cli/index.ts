@@ -5,9 +5,9 @@ import { getUserPkgManager } from "@/utils/get-user-pkg-manager.js"
 
 export interface CliResults {
   projectName: string
-  orm: "none" | "drizzle"
-  dialect?: "postgres" | "sqlite"
-  provider?: "neon" | "postgres" | "d1-http" | "vercel-postgres" | "planetscale"
+  orm: "none" | "drizzle" | "mongoose"
+  dialect?: "postgres" | "sqlite" | "mongodb"
+  provider?: "neon" | "postgres" | "d1-http" | "vercel-postgres" | "planetscale" | "mongodb-local" | "mongodb-atlas"
   noInstall: boolean
 }
 
@@ -57,6 +57,7 @@ const promptOrm = async (): Promise<Orm> => {
     options: [
       { value: "none", label: "None" },
       { value: "drizzle", label: "Drizzle ORM" },
+      { value: "mongoose", label: "Mongoose (MongoDB)" },
     ],
   })
 
@@ -73,7 +74,8 @@ const promptDialect = async (): Promise<Dialect> => {
     message: "Which dialect would you like to use?",
     options: [
       { value: "postgres", label: "PostgreSQL" },
-      { value: "sqlite", label: "SQLite" }
+      { value: "sqlite", label: "SQLite" },
+      { value: "mongodb", label: "MongoDB" }
     ]
   })
 
@@ -86,21 +88,27 @@ const promptDialect = async (): Promise<Dialect> => {
 }
 
 const promptProvider = async (dialect: Dialect): Promise<CliResults["provider"]> => {
-  const isPostgres = dialect === "postgres"
-
-  const options = isPostgres
-    ? [
+  const providerOptions = {
+    postgres: [
       { value: "postgres", label: "PostgreSQL" },
       { value: "neon", label: "Neon" },
       { value: "vercel-postgres", label: "Vercel Postgres" }
-    ]
-    : [
+    ],
+    sqlite: [
       { value: "d1-http", label: "D1 HTTP" }
+    ],
+    mongodb: [
+      { value: "mongodb-local", label: "MongoDB Local (default)" },
+      { value: "mongodb-atlas", label: "MongoDB Atlas" }
     ]
+  }
+
+  const options = providerOptions[dialect!] || []
 
   const provider = await p.select({
     message: `Which ${dialect} provider would you like to use?`,
     options,
+    initialValue: dialect === "mongodb" ? "mongodb-local" : undefined,
   })
 
   if (p.isCancel(provider)) {
@@ -171,6 +179,9 @@ export async function runCli(): Promise<CliResults> {
 
     if (orm === "drizzle") {
       dialect = await promptDialect()
+      provider = await promptProvider(dialect)
+    } else if (orm === "mongoose") {
+      dialect = "mongodb"
       provider = await promptProvider(dialect)
     }
 

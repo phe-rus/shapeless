@@ -22,6 +22,8 @@ export const dependencyVersionMap = {
 
   // Opennextjs
   "@opennextjs/cloudflare": "^1",
+  "mongoose": "^8",
+  "@types/mongoose": "^5",
 
 
   // TailwindCSS
