@@ -7,7 +7,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/upstash/shapeless.git"
+    "url": "https://github.com/phe-rus/shapeless.git"
   },
   "scripts": {
     "build": "turbo run build",
