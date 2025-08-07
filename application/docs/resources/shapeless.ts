@@ -5,7 +5,6 @@ import { shapeless } from "@shapelesss/core"
 interface Env {
     Bindings: CloudflareEnv
 }
-
 export const app = shapeless.init<Env>()
 
 /**
