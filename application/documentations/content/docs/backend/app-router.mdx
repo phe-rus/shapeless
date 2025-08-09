@@ -1,0 +1,180 @@
+---
+title: AppRouter
+summary: How the appRouter works in Shapeless
+date: 2024-09-25
+author: "Pherus"
+---
+
+# The appRouter in Shapeless
+
+The `appRouter` is the central router that handles all your backend API requests. It:
+
+- Routes requests to the right procedure
+- Acts as the backend entry point for deployment
+
+Since Shapeless builds on Hono, you can deploy this router anywhere — Cloudflare Workers, Vercel, Netlify, Railway, AWS, and more.
+
+```plaintext
+application/
+  └── resources/
+      ├── shapeless.ts       # Initialize Shapeless
+      ├── index.ts           # Main appRouter
+      └── routers/           # API routers
+          ├── post-router.ts
+          ├── user-router.ts
+          └──
+  ────src/
+      |── app
+```
+
+---
+
+## Creating your appRouter
+
+Start by creating a base `api` router with global config like base path, CORS, and error handling.
+
+```ts resources/index.ts {4,11}
+import { app } from "./shapeless"
+import { postRouter } from "./routers/post-router"
+
+// 1. Base API with global middleware & config
+const api = app
+  .router()
+  .basePath("/api")
+  .use(app.defaults.cors)
+  .onError(app.defaults.errorHandler)
+
+// 2. Merge feature routers
+const appRouter = app.mergeRouters(api, {
+  post: postRouter,
+})
+
+export type AppRouter = typeof appRouter
+export default appRouter
+```
+
+---
+
+## Router Configuration Options
+
+Shapeless routers extend the [Hono API](https://hono.dev/docs/api/hono), so you have full access to all Hono router features like:
+
+- Global error handling
+- Custom 404 responses
+- Middleware chaining
+- And more
+
+Common options you’ll use:
+
+---
+
+### Error Handling
+
+Use `app.defaults.errorHandler` for standardized API error responses:
+
+```ts resources/index.ts {7}
+const api = app
+  .router()
+  .basePath("/api")
+  .use(app.defaults.cors)
+  .onError(app.defaults.errorHandler)
+```
+
+On the frontend, handle errors like this:
+
+```tsx app/page.tsx {4,13-15}
+"use client"
+
+import { useMutation } from "@tanstack/react-query"
+import { HTTPException } from "hono/http-exception"
+import { client } from "@/lib/shapeless-client"
+
+export default function Page() {
+  const { mutate: createPost } = useMutation({
+    mutationFn: async () => {
+      const res = await client.post.create.$post()
+      return await res.json()
+    },
+    onError: (err: HTTPException) => {
+      console.error(err.message)
+    },
+  })
+
+  return <button onClick={() => createPost()}>Create Post</button>
+}
+```
+
+You can also customize error handling:
+
+```ts
+api.onError((err, c) => {
+  console.error(err)
+  return c.text("Something went wrong", 500)
+})
+```
+
+---
+
+### Base Path
+
+Set the base path where your API lives:
+
+```ts
+const api = app
+  .router()
+  .basePath("/api") // All API routes will be under /api/*
+  .use(app.defaults.cors)
+  .onError(app.defaults.errorHandler)
+```
+
+Make sure your API route folder corresponds with this path.
+
+---
+
+### CORS Middleware
+
+CORS is handled by default via:
+
+```ts
+.use(app.defaults.cors)
+```
+
+If you want to customize CORS, use Hono’s cors middleware and **include** the `x-is-superjson` header because Shapeless uses it internally for JSON serialization:
+
+```ts
+import { cors } from "hono/cors"
+
+const api = app
+  .router()
+  .use(
+    cors({
+      allowHeaders: ["x-is-superjson"],
+      exposeHeaders: ["x-is-superjson"],
+      origin: "*",
+      credentials: true,
+    }),
+  )
+  .onError(app.defaults.errorHandler)
+```
+
+---
+
+### Inferring Router Input and Output Types
+
+Leverage Shapeless’s TypeScript helpers to infer procedure inputs and outputs for type-safe frontend calls:
+
+```ts
+import type { AppRouter } from "./index"
+import type { InferRouterInputs, InferRouterOutputs } from "@shapelesss/core"
+
+type Input = InferRouterInputs<AppRouter>
+type Output = InferRouterOutputs<AppRouter>
+
+// Usage example:
+type CreatePostInput = Input["post"]["create"]
+type CreatePostOutput = Output["post"]["create"]
+```
+
+---
+
+This structure lets you organize your backend API cleanly, keep things type-safe end-to-end, and deploy anywhere with confidence.

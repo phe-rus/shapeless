@@ -1,0 +1,230 @@
+---
+title: Procedures
+summary: Defining API procedures in Shapeless
+date: 2024-09-25
+author: "Pherus"
+---
+
+# Procedures
+
+In Shapeless, a **procedure** is an API endpoint that handles a specific operation. There are three types of procedures:
+
+- `get` procedures for handling GET requests
+- `post` procedures for handling POST requests
+- `ws` (WebSocket) procedures for real-time communication
+
+```plaintext
+resources/
+  ├── shapeless.ts      # Initialize Shapeless
+  ├── index.ts          # Main appRouter
+  └── routers/          # Router directory
+    ├── user-router.ts
+    ├── post-router.ts
+    └── payment-router.ts
+```
+
+For simplicity, define your procedures and middleware inside `shapeless.ts`. You can split into separate files if you prefer.
+
+---
+
+## Procedures Overview
+
+Shapeless provides a `publicProcedure` by default that anyone (authenticated or not) can call. You can build on this to create protected procedures with middleware.
+
+```ts
+// resources/shapeless.ts
+import { shapeless } from "@shapelesss/core"
+
+interface Env {
+  Bindings: { DATABASE_URL: string }
+}
+
+export const app = shapeless.init<Env>()
+
+/**
+ * Public (unauthenticated) procedures
+ * This is the base for creating procedures.
+ */
+export const publicProcedure = app.procedure
+```
+
+---
+
+## Example: Authenticated Procedure
+
+Here’s how to create a procedure that only authenticated users can access:
+
+```ts
+// resources/shapeless.ts
+import { HTTPException } from "hono/http-exception"
+import { shapeless } from "@shapelesss/core"
+
+interface Env {
+  Bindings: { DATABASE_URL: string }
+}
+
+export const app = shapeless.init<Env>()
+
+const authMiddleware = app.middleware(async ({ c, next }) => {
+  // Example authentication check (replace with real logic)
+  const isAuthenticated = true
+
+  if (!isAuthenticated) {
+    throw new HTTPException(401, {
+      message: "Unauthorized, please sign in.",
+    })
+  }
+
+  // Attach user data to context
+  await next({ user: { id: "123", name: "John Doe" } })
+})
+
+export const publicProcedure = app.procedure
+export const privateProcedure = publicProcedure.use(authMiddleware)
+```
+
+---
+
+### Using the Private Procedure
+
+```ts
+// resources/routers/post-router.ts
+import { app, privateProcedure } from "../shapeless"
+
+export const postRouter = app.router({
+  list: privateProcedure.get(({ c }) => {
+    return c.json({ posts: [] })
+  }),
+})
+```
+
+Now only authenticated users can call `/api/post/list`. Unauthenticated requests get a 401.
+
+---
+
+## GET Procedures
+
+`GET` procedures read data and accept input via query parameters:
+
+```ts
+// resources/routers/post-router.ts
+import { app, publicProcedure } from "../shapeless"
+
+export const postRouter = app.router({
+  recent: publicProcedure.get(({ c }) => {
+    const post = {
+      id: 1,
+      title: "My first post",
+    }
+    return c.json({ post })
+  }),
+})
+```
+
+Call from the client with:
+
+```ts
+import { client } from "@/shapeless-client"
+
+const res = await client.post.recent.$get()
+```
+
+---
+
+## POST Procedures
+
+`POST` procedures modify data and accept input via request body:
+
+```ts
+// resources/routers/post-router.ts
+import { app, publicProcedure } from "../shapeless"
+
+export const postRouter = app.router({
+  create: publicProcedure.post(({ c, input }) => {
+    return c.json({ message: "Post created!" })
+  }),
+})
+```
+
+Call from the client with:
+
+```ts
+import { client } from "@/shapeless-client"
+
+const res = await client.post.create.$post()
+```
+
+---
+
+## Input Validation
+
+Shapeless uses [Zod](https://zod.dev/) for input validation. Define schemas with `.input()`:
+
+```ts
+// resources/routers/post-router.ts
+import { z } from "zod"
+import { app, publicProcedure } from "../shapeless"
+
+export const postRouter = app.router({
+  create: publicProcedure
+    .input(z.object({ title: z.string().min(1) }))
+    .post(({ input }) => {
+      const { title } = input
+      return { message: `Created post: "${title}"` }
+    }),
+})
+```
+
+Invalid input automatically triggers your global error handler.
+
+Calling from the client enforces input types:
+
+```ts
+import { client } from "@/shapeless-client"
+
+await client.post.create.$post({ title: "My new post" })
+```
+
+---
+
+## WebSocket Procedures
+
+For real-time features, use WebSocket procedures with `.ws()` and schemas for incoming/outgoing events:
+
+```ts
+// resources/routers/post-router.ts
+import { app, publicProcedure } from "../shapeless"
+import { z } from "zod"
+
+const incomingEvents = z.object({
+  like: z.object({ username: z.string(), postId: z.string() }),
+})
+
+const outgoingEvents = z.object({
+  like: z.object({ username: z.string() }),
+})
+
+export const postRouter = app.router({
+  likes: publicProcedure
+    .incoming(incomingEvents)
+    .outgoing(outgoingEvents)
+    .ws(({ io }) => ({
+      onConnect({ socket }) {
+        socket.on("like", ({ username, postId }) => {
+          console.log(`${username} liked post ${postId}`)
+          io.to(postId).emit("like", { username })
+        })
+      },
+      onDisconnect() {
+        console.log("User disconnected")
+      },
+      onError({ error }) {
+        console.error("Socket error:", error)
+      },
+    })),
+})
+```
+
+WebSocket procedures use Upstash Redis and expect deployment to Cloudflare Workers.
+
+[Read more about WebSocket procedures →](/docs/backend/websockets)

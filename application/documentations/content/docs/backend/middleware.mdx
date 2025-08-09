@@ -1,0 +1,162 @@
+---
+title: Middleware
+summary: Understanding and implementing middleware in Shapeless
+date: 2024-09-25
+author: "Pherus"
+---
+
+# Middleware
+
+Middleware in Shapeless lets you add reusable logic that runs between procedure calls and handlers. It’s ideal for cross-cutting concerns like authentication, logging, and error handling.
+
+---
+
+## Basic Middleware Structure
+
+```ts
+// resources/shapeless.ts
+const myMiddleware = app.middleware(async ({ c, next }) => {
+  // 1️⃣ Code that runs before the handler
+  // ...
+
+  // 2️⃣ Pass data to the next middleware or handler
+  return await next({ customData: "value" })
+})
+```
+
+---
+
+## Common Use Cases
+
+### Authentication Middleware
+
+This middleware ensures the user is authenticated before proceeding. If not authenticated, it throws an error and blocks the procedure:
+
+```ts
+// resources/shapeless.ts
+import { HTTPException } from "hono/http-exception"
+import { shapeless } from "@shapelesss/core"
+
+interface Env {
+  Bindings: { DATABASE_URL: string }
+}
+
+export const app = shapeless.init<Env>()
+
+const authMiddleware = app.middleware(async ({ c, next }) => {
+  // Mock authentication check
+  const isAuthenticated = true
+
+  if (!isAuthenticated) {
+    throw new HTTPException(401, {
+      message: "Unauthorized, please sign in.",
+    })
+  }
+
+  // Attach user info to context for downstream handlers
+  return await next({ user: { name: "John Doe" } })
+})
+
+export const publicProcedure = app.procedure
+export const privateProcedure = publicProcedure.use(authMiddleware)
+```
+
+Now, in any `privateProcedure`, you can safely access the user info:
+
+```ts
+// resources/routers/post-router.ts
+import { app, privateProcedure } from "../shapeless"
+
+export const postRouter = app.router({
+  list: privateProcedure.get(({ c, ctx }) => {
+    // Access user info injected by middleware
+    const { user } = ctx
+
+    return c.json({ posts: [] })
+  }),
+})
+```
+
+---
+
+## Middleware Chaining
+
+You can chain multiple middlewares using `.use()`:
+
+```ts
+const enhancedProcedure = publicProcedure
+  .use(authMiddleware)
+  .use(loggingMiddleware)
+  .use(rateLimitMiddleware)
+```
+
+If middleware depends on previous middleware outputs, use Shapeless’s type inference utility to type `ctx` correctly:
+
+```ts
+// resources/shapeless.ts
+import { InferMiddlewareOutput, shapeless } from "@shapelesss/core"
+
+interface Env {
+  Bindings: { DATABASE_URL: string }
+}
+
+export const app = shapeless.init<Env>()
+
+const authMiddleware = app.middleware(async ({ c, next }) => {
+  return await next({ user: { name: "John Doe" } })
+})
+
+type AuthOutput = InferMiddlewareOutput<typeof authMiddleware>
+
+const loggingMiddleware = app.middleware(async ({ c, ctx, next }) => {
+  const { user } = ctx as AuthOutput
+
+  const start = performance.now()
+  await next()
+  const end = performance.now()
+
+  console.log(`${user.name}'s request took ${end - start}ms`)
+})
+
+export const publicProcedure = app.procedure
+export const privateProcedure = publicProcedure
+  .use(authMiddleware)
+  .use(loggingMiddleware)
+```
+
+---
+
+## Using Hono Middleware
+
+Shapeless is compatible with Hono middleware using the `fromHono` adapter:
+
+```ts
+import { app } from "../shapeless"
+import { cors } from "hono/cors"
+
+const corsMiddleware = app.fromHono(cors())
+const procedureWithCors = publicProcedure.use(corsMiddleware)
+```
+
+---
+
+## Best Practices
+
+- Keep middleware focused on a single responsibility.
+- Handle errors globally with your `appRouter`'s `onError()` method.
+
+---
+
+## Common Middleware Examples
+
+- Authentication
+- Request logging
+- Rate limiting
+- Error handling
+- Input validation
+- Performance monitoring
+- CORS handling
+
+---
+
+→ See all built-in Hono middleware in the [Hono docs](https://hono.dev/docs/middleware/builtin/basic-auth).

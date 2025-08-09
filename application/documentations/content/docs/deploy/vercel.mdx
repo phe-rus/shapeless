@@ -1,0 +1,98 @@
+---
+title: Vercel
+summary: Deploy Shapeless to Vercel
+date: 2024-09-25
+author: "Pherus"
+---
+
+# Deploy to Vercel
+
+**Deploying Shapeless to Vercel works like any modern Next.js app**, including OpenNext features. This guide covers the essentials for a smooth deployment.
+
+---
+
+## Deployment Steps
+
+1. **Configure Client URL**
+
+   Update your API client to use the correct URL depending on environment:
+
+   ```ts @/shapeless.client.ts {5,9-17}
+   import type { AppRouter } from "@/server"
+   import { createClient } from "shapeless"
+
+   export const client = createClient<AppRouter>({
+     baseUrl: `${getBaseUrl()}/api`,
+   })
+
+   function getBaseUrl() {
+     // 👇 Use browser origin if on client
+     if (typeof window !== "undefined") {
+       return window.location.origin
+     }
+
+     // 👇 Use Vercel URL in production environment
+     if (process.env.VERCEL_URL) {
+       return `https://${process.env.VERCEL_URL}`
+     }
+
+     // 👇 Default fallback to localhost
+     return "http://localhost:3000"
+   }
+   ```
+
+2. **Deploy Your App**
+
+- Connect your GitHub repo to Vercel via the dashboard
+- Vercel automatically detects and builds your Next.js/OpenNext app
+- Alternatively, deploy manually using the Vercel CLI:
+
+  ```bash
+  vercel deploy
+  ```
+
+---
+
+## Environment Variables
+
+Set your environment variables via the Vercel dashboard:
+
+- Go to your project
+- Open **Settings** > **Environment Variables**
+- Add variables as needed
+
+Alternatively, use the CLI:
+
+```bash
+vercel env add <KEY>
+```
+
+---
+
+## Common Issues
+
+### CORS Configuration
+
+If you face CORS errors, ensure your API router includes CORS middleware:
+
+```ts
+// resources/index.ts
+import { app } from "./shapeless"
+import { postRouter } from "./routers/post-router"
+
+const api = app
+  .router()
+  .basePath("/api")
+  .use(app.defaults.cors)
+  .onError(app.defaults.errorHandler)
+
+const appRouter = app.mergeRouters(api, {
+  post: postRouter,
+})
+
+export type AppRouter = typeof appRouter
+
+export default appRouter
+```
+
+[→ More on CORS handling](/docs/backend/app-router#cors)

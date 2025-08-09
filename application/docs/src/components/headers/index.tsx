@@ -28,7 +28,7 @@ export default function Header({ count }: props) {
                         <MobileNavigation />
                         <ShinyButton
                             className="group hidden md:flex text-sm text-muted-light"
-                            href="https://github.com/phe-rus/shapless"
+                            href="https://github.com/phe-rus/shapeless"
                         >
                             <Icons.github className="size-4 shrink-0" />
                             Star <span className="hidden md:flex">on GitHub</span>
