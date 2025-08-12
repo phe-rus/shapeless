@@ -37,7 +37,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-DEVREDME.md
+DEVREDME*.md
 
 # wrangler
 .wrangler

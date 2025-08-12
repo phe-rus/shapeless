@@ -9,10 +9,13 @@ import { IO } from "./io"
 import { bodyParsingMiddleware, queryParsingMiddleware } from "./middleware"
 import {
   ContextWithSuperJSON,
+  DeleteOperation,
   GetOperation,
   InferInput,
   OperationType,
+  PatchOperation,
   PostOperation,
+  PutOperation,
   RouterConfig,
   WebSocketOperation,
 } from "./types"
@@ -24,12 +27,21 @@ type FlattenRoutes<T> = {
   ? { [P in `${string & K}`]: T[K] }
   : T[K] extends PostOperation<any, any>
   ? { [P in `${string & K}`]: T[K] }
+  : T[K] extends PatchOperation<any, any>
+  ? { [P in `${string & K}`]: T[K] }
+  : T[K] extends DeleteOperation<any, any>
+  ? { [P in `${string & K}`]: T[K] }
+  : T[K] extends PutOperation<any, any>
+  ? { [P in `${string & K}`]: T[K] }
   : T[K] extends Record<string, any>
   ? {
     [SubKey in keyof T[K]as `${string & K}/${string & SubKey}`]: T[K][SubKey] extends
     | WebSocketOperation<any, any>
     | GetOperation<any, any>
     | PostOperation<any, any>
+    | PatchOperation<any, any>
+    | DeleteOperation<any, any>
+    | PutOperation<any, any>
     ? T[K][SubKey]
     : never
   }
@@ -62,6 +74,33 @@ export type RouterSchema<T extends Record<string, any>> = {
     }
   }
   : T[K] extends PostOperation<any, any>
+  ? {
+    $put: {
+      input: InferInput<T[K]>
+      output: ReturnType<T[K]["handler"]>
+      outputFormat: "json"
+      status: StatusCode
+    }
+  }
+  : T[K] extends PutOperation<any, any>
+  ? {
+    $patch: {
+      input: InferInput<T[K]>
+      output: ReturnType<T[K]["handler"]>
+      outputFormat: "json"
+      status: StatusCode
+    }
+  }
+  : T[K] extends PatchOperation<any, any>
+  ? {
+    $delete: {
+      input: InferInput<T[K]>
+      output: ReturnType<T[K]["handler"]>
+      outputFormat: "json"
+      status: StatusCode
+    }
+  }
+  : T[K] extends DeleteOperation<any, any>
   ? {
     $post: {
       input: InferInput<T[K]>
@@ -96,6 +135,33 @@ export type OperationSchema<T> =
   }
   : T extends PostOperation<any, any>
   ? {
+    $patch: {
+      input: InferInput<T>
+      output: ReturnType<T["handler"]>
+      outputFormat: "json"
+      status: StatusCode
+    }
+  }
+  : T extends PatchOperation<any, any>
+  ? {
+    $delete: {
+      input: InferInput<T>
+      output: ReturnType<T["handler"]>
+      outputFormat: "json"
+      status: StatusCode
+    }
+  }
+  : T extends DeleteOperation<any, any>
+  ? {
+    $put: {
+      input: InferInput<T>
+      output: ReturnType<T["handler"]>
+      outputFormat: "json"
+      status: StatusCode
+    }
+  }
+  : T extends PutOperation<any, any>
+  ? {
     $post: {
       input: InferInput<T>
       output: ReturnType<T["handler"]>
@@ -118,7 +184,7 @@ export class Router<
   _metadata: {
     subRouters: Record<string, Promise<Router<any>> | Router<any>>
     config: RouterConfig | Record<string, RouterConfig>
-    procedures: Record<string, Record<string, { type: "get" | "post" | "ws" }>>
+    procedures: Record<string, Record<string, { type: "get" | "post" | "ws" | "patch" | "put" | "delete" }>>
     registeredPaths: string[]
   }
 
@@ -200,7 +266,7 @@ export class Router<
       value &&
       typeof value === "object" &&
       "type" in value &&
-      (value.type === "get" || value.type === "post" || value.type === "ws")
+      ["get", "post", "delete", "put", "patch", "ws"].includes(value.type)
     )
   }
 
@@ -416,6 +482,31 @@ export class Router<
           })
         },
       )
+    } else if (operation.type === "delete") {
+      this.delete(routePath, ...operationMiddlewares, async (c) => {
+        const typedC = c as Context<E & { Variables: InternalContext }>
+
+        const ctx = typedC.get("__middleware_output") || {}
+        const input = operation.schema?.parse(c.req.param())
+        const result = await operation.handler({ c: c as ContextWithSuperJSON<E>, ctx, input })
+        return result ?? c.json(undefined)
+      })
+    } else if (operation.type === "put") {
+      this.put(routePath, bodyParsingMiddleware, ...operationMiddlewares, async (c) => {
+        const typedC = c as Context<E & { Variables: InternalContext }>
+        const ctx = typedC.get("__middleware_output") || {}
+        const input = operation.schema?.parse(await c.req.json())
+        const result = await operation.handler({ c: c as ContextWithSuperJSON<E>, ctx, input })
+        return result ?? c.json(undefined)
+      })
+    } else if (operation.type === "patch") {
+      this.patch(routePath, bodyParsingMiddleware, ...operationMiddlewares, async (c) => {
+        const typedC = c as Context<E & { Variables: InternalContext }>
+        const ctx = typedC.get("__middleware_output") || {}
+        const input = operation.schema?.parse(await c.req.json())
+        const result = await operation.handler({ c: c as ContextWithSuperJSON<E>, ctx, input })
+        return result ?? c.json(undefined)
+      })
     }
   }
 }

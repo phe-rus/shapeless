@@ -251,6 +251,63 @@ export class Procedure<
     }
   }
 
+  delete<Return extends OptionalPromise<ResponseType<any>>>(
+    handler: ({
+      ctx,
+      c,
+      input,
+    }: {
+      ctx: Ctx
+      c: ContextWithSuperJSON<E>
+      input: InputSchema extends ZodTypeAny ? z.infer<InputSchema> : void
+    }) => Return,
+  ) {
+    return {
+      type: "delete",
+      schema: this.inputSchema,
+      handler: handler as any,
+      middlewares: this.middlewares,
+    }
+  }
+
+  put<Return extends OptionalPromise<ResponseType<any>>>(
+    handler: ({
+      ctx,
+      c,
+      input,
+    }: {
+      ctx: Ctx
+      c: ContextWithSuperJSON<E>
+      input: InputSchema extends ZodTypeAny ? z.infer<InputSchema> : void
+    }) => Return,
+  ) {
+    return {
+      type: "put",
+      schema: this.inputSchema,
+      handler: handler as any,
+      middlewares: this.middlewares,
+    }
+  }
+
+  patch<Return extends OptionalPromise<ResponseType<any>>>(
+    handler: ({
+      ctx,
+      c,
+      input,
+    }: {
+      ctx: Ctx
+      c: ContextWithSuperJSON<E>
+      input: InputSchema extends ZodTypeAny ? z.infer<InputSchema> : void
+    }) => Return,
+  ) {
+    return {
+      type: "patch",
+      schema: this.inputSchema,
+      handler: handler as any,
+      middlewares: this.middlewares,
+    }
+  }
+
   mutation<Return extends OptionalPromise<ResponseType<any>>>(
     handler: ({
       ctx,

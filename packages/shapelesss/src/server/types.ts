@@ -142,6 +142,67 @@ export type PostOperation<
   middlewares: MiddlewareFunction<any, any, E>[]
 }
 
+/**
+ * Newly added operation types
+ * alongside GetOperation, PostOperation, and WebSocketOperation.
+ */
+export type DeleteOperation<
+  Schema extends Record<string, any> | void,
+  Return = OptionalPromise<ResponseType<any>>,
+  E extends Env = any,
+> = {
+  type: "delete"
+  schema?: z.ZodType<Schema> | void
+  handler: <Input>({
+    c,
+    ctx,
+    input,
+  }: {
+    ctx: Input
+    c: ContextWithSuperJSON<E>
+    input: Schema extends Record<string, any> ? Schema : void
+  }) => UnwrapResponse<OptionalPromise<Return>>
+  middlewares: MiddlewareFunction<any, any, E>[]
+}
+
+export type PutOperation<
+  Schema extends Record<string, any> | void,
+  Return = OptionalPromise<ResponseType<any>>,
+  E extends Env = any,
+> = {
+  type: "put"
+  schema?: z.ZodType<Schema> | void
+  handler: <Input>({
+    c,
+    ctx,
+    input,
+  }: {
+    ctx: Input
+    c: ContextWithSuperJSON<E>
+    input: Schema extends Record<string, any> ? Schema : void
+  }) => UnwrapResponse<OptionalPromise<Return>>
+  middlewares: MiddlewareFunction<any, any, E>[]
+}
+
+export type PatchOperation<
+  Schema extends Record<string, any> | void,
+  Return = OptionalPromise<ResponseType<any>>,
+  E extends Env = any,
+> = {
+  type: "patch"
+  schema?: z.ZodType<Schema> | void
+  handler: <Input>({
+    c,
+    ctx,
+    input,
+  }: {
+    ctx: Input
+    c: ContextWithSuperJSON<E>
+    input: Schema extends Record<string, any> ? Schema : void
+  }) => UnwrapResponse<OptionalPromise<Return>>
+  middlewares: MiddlewareFunction<any, any, E>[]
+}
+
 export type OperationType<
   I extends Record<string, any>,
   O extends Record<string, unknown>,
@@ -150,6 +211,10 @@ export type OperationType<
   | GetOperation<I, O, E>
   | PostOperation<I, O, E>
   | WebSocketOperation<I, O, E>
+  /** added delete, put, head and patch */
+  | DeleteOperation<I, O, E>
+  | PutOperation<I, O, E>
+  | PatchOperation<I, O, E>
 
 export type InferInput<T> =
   T extends OperationType<infer I, any>

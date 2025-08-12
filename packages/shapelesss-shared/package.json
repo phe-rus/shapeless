@@ -1,6 +1,6 @@
 {
   "name": "@shapelesss/shared",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -38,7 +38,7 @@
   "author": "Pherus",
   "license": "ISC",
   "devDependencies": {
-    "@cloudflare/workers-types": "^4",
+    "@cloudflare/workers-types": "^4.20250812.0",
     "@types/node": "^24",
     "dotenv": "^17",
     "hono": "^4",
@@ -51,6 +51,6 @@
   "peerDependencies": {
     "zod": ">=3.24.1",
     "hono": ">=4.6.17",
-    "react": ">=16.8.0"
+    "react": ">=18"
   }
 }

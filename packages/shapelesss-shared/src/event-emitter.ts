@@ -45,7 +45,7 @@ export class EventEmitter {
   handleSchemaMismatch(event: string, data: any, err: any) {
     if (err instanceof z.ZodError) {
       logger.error(`Invalid outgoing event data for "${event}":`, {
-        errors: err.errors
+        errors: err?.errors
           .map((e) => `${e.path.join(".")}: ${e.message}`)
           .join(", "),
         data: JSON.stringify(data, null, 2),
