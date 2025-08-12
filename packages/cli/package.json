@@ -37,7 +37,7 @@
     "execa": "^9.6.0",
     "fs-extra": "^11.3.0",
     "hono": "^4.8.9",
-    "@shapelesss/core": "^1.0.0",
+    "@shapelesss/core": "^1.0.1",
     "ora": "^8.2.0",
     "sort-package-json": "^3.4.0",
     "tsup": "^8.5.0"
