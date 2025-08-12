@@ -64,6 +64,6 @@
   "type": "module",
   "types": "dist/server/index.d.ts",
   "dependencies": {
-    "@shapelesss/shared": "workspace:*"
+    "@shapelesss/shared": "1.0.1"
   }
 }

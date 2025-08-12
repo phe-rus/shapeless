@@ -100,8 +100,8 @@ importers:
   packages/shapelesss:
     dependencies:
       '@shapelesss/shared':
-        specifier: workspace:*
-        version: link:../shapelesss-shared
+        specifier: 1.0.1
+        version: 1.0.1(hono@4.8.5)(react@19.1.1)(zod@3.24.1)
       hono:
         specifier: '>=4.6.17'
         version: 4.8.5
@@ -1345,6 +1345,13 @@ packages:
     peerDependencies:
       hono: '>=4.6.17'
       react: '>=16.8.0'
+      zod: '>=3.24.1'
+
+  '@shapelesss/shared@1.0.1':
+    resolution: {integrity: sha512-mhddBGTl+lwpuNjTKTE752E3VFcIvYbzXPiL0NMXQi6RzjK4vobXHmgKSvaI/+3QSynCsU+DVT+TNBx8++17sw==}
+    peerDependencies:
+      hono: '>=4.6.17'
+      react: '>=18'
       zod: '>=3.24.1'
 
   '@sindresorhus/is@7.0.2':
@@ -5011,6 +5018,12 @@ snapshots:
       hono: 4.8.9
       react: 19.1.1
       zod: 4.0.5
+
+  '@shapelesss/shared@1.0.1(hono@4.8.5)(react@19.1.1)(zod@3.24.1)':
+    dependencies:
+      hono: 4.8.5
+      react: 19.1.1
+      zod: 3.24.1
 
   '@sindresorhus/is@7.0.2': {}
 
