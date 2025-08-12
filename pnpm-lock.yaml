@@ -106,8 +106,8 @@ importers:
         specifier: '>=4.6.17'
         version: 4.8.5
       react:
-        specifier: '>=16.8.0'
-        version: 19.1.0
+        specifier: '>=18'
+        version: 19.1.1
       zod:
         specifier: '>=3.24.1'
         version: 3.24.1
