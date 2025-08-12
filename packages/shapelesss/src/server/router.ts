@@ -354,7 +354,7 @@ export class Router<
                 "To fix this error:\n" +
                 "1. Log in to Upstash Redis at https://upstash.com\n" +
                 "2. Add UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN to your environment variables\n\n" +
-                "Complete WebSockets guide: https://jstack.app/docs/websockets\n",
+                "Complete WebSockets guide: https://shapeless.pherus.org/docs/websockets\n",
             })
           }
 

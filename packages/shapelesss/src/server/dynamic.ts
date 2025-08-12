@@ -3,7 +3,7 @@ import { Router } from "./router"
 /**
  * Dynamically imports routers to enable code splitting. Improves performance and reduces cold starts.
  * 
- * @see https://jstack.app/docs/backend/performance
+ * @see https://shapeless.pherus.org/docs/backend/performance
  * 
  * @param importFn - Function that imports a router
  * @throws {Error} If module has no exports, multiple exports, or invalid Router
@@ -11,7 +11,7 @@ import { Router } from "./router"
  * @example
  * import { dynamic } from "@shapelesss/core"
  * 
- * const appRouter = j.mergeRouters(api, {
+ * const appRouter = app.mergeRouters(api, {
  *   router: dynamic(() => import("./routers/my-router")),
  * })
  */

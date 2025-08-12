@@ -65,7 +65,7 @@ export class Procedure<
   /**
    * Validates incoming WebSocket messages using a Zod schema.
    *
-   * @see https://jstack.app/docs/backend/websockets
+   * @see https://shapeless.pherus.org/docs/backend/websockets
    * @param schema - A Zod schema to validate incoming WebSocket messages
    *
    * @example
@@ -103,7 +103,7 @@ export class Procedure<
   /**
    * Validates outgoing WebSocket messages using a Zod schema.
    *
-   * @see https://jstack.app/docs/backend/websockets
+   * @see https://shapeless.pherus.org/docs/backend/websockets
    * @param schema - A Zod schema to validate outgoing WebSocket messages
    *
    * @example
@@ -142,12 +142,12 @@ export class Procedure<
   /**
    * Validates input parameters using a Zod schema.
    * 
-   * @see https://jstack.app/docs/backend/procedures#input-validation
+   * @see https://shapeless.pherus.org/docs/backend/procedures#input-validation
    * @param schema - A Zod schema to validate input parameters
    * 
    * @example
    * ```ts
-   * const router = j.router({
+   * const router = app.router({
    *   hello: publicProcedure
    *     .input(z.object({ name: z.string() }))
    *     .get(({ c, input }) => {
@@ -168,18 +168,18 @@ export class Procedure<
   /**
    * Adds a middleware function to the procedure chain.
    * 
-   * @see https://jstack.app/docs/backend/middleware
+   * @see https://shapeless.pherus.org/docs/backend/middleware
    * @param handler - A middleware function that can modify the context
    * 
    * @example
    * ```ts
    * // Create a middleware that adds user data to context
-   * const withUser = j.middleware(async ({ ctx, next }) => {
+   * const withUser = app.middleware(async ({ ctx, next }) => {
    *   const user = await getUser()
    *   return await next({ user }) // Adds user to ctx
    * })
    * 
-   * const router = j.router({
+   * const router = app.router({
    *   profile: publicProcedure
    *     .use(withUser) // Apply middleware
    *     .get(({ c, ctx }) => {
