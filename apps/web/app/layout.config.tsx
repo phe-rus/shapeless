@@ -1,4 +1,5 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
+import { IconBrandGithub } from "@tabler/icons-react"
 
 /**
  * Shared layout configurations
@@ -32,6 +33,16 @@ export const baseOptions: BaseLayoutProps = {
       active: "url",
       secondary: false,
       description: "Link to documentations"
+    },
+    {
+      label: "GITHUB",
+      icon: <IconBrandGithub />,
+      url: 'https://github.com/phe-rus/shapeless',
+      text: "GITHUB",
+      active: "url",
+      secondary: true,
+      description: "Link to git repo"
     }
   ],
-};
+  githubUrl: "https://github.com/phe-rus/shapeless"
+}
