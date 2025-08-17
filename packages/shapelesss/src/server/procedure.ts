@@ -103,7 +103,7 @@ export class Procedure<
   /**
    * Validates outgoing WebSocket messages using a Zod schema.
    *
-   * @see https://shapeless.pherus.org/docs/backend/websockets
+   * @see https://shapeless.pherus/docs/backend/websockets
    * @param schema - A Zod schema to validate outgoing WebSocket messages
    *
    * @example
@@ -142,12 +142,12 @@ export class Procedure<
   /**
    * Validates input parameters using a Zod schema.
    * 
-   * @see https://shapeless.pherus.org/docs/backend/procedures#input-validation
+   * @see https://shapeless.pherus/docs/backend/procedures#input-validation
    * @param schema - A Zod schema to validate input parameters
    * 
    * @example
    * ```ts
-   * const router = app.router({
+   * const router = j.router({
    *   hello: publicProcedure
    *     .input(z.object({ name: z.string() }))
    *     .get(({ c, input }) => {
@@ -168,18 +168,18 @@ export class Procedure<
   /**
    * Adds a middleware function to the procedure chain.
    * 
-   * @see https://shapeless.pherus.org/docs/backend/middleware
+   * @see https://shapeless.pherus/docs/backend/middleware
    * @param handler - A middleware function that can modify the context
    * 
    * @example
    * ```ts
    * // Create a middleware that adds user data to context
-   * const withUser = app.middleware(async ({ ctx, next }) => {
+   * const withUser = j.middleware(async ({ ctx, next }) => {
    *   const user = await getUser()
    *   return await next({ user }) // Adds user to ctx
    * })
    * 
-   * const router = app.router({
+   * const router = j.router({
    *   profile: publicProcedure
    *     .use(withUser) // Apply middleware
    *     .get(({ c, ctx }) => {
@@ -245,63 +245,6 @@ export class Procedure<
   ): PostOperation<InputSchema, ReturnType<typeof handler>, E> {
     return {
       type: "post",
-      schema: this.inputSchema,
-      handler: handler as any,
-      middlewares: this.middlewares,
-    }
-  }
-
-  delete<Return extends OptionalPromise<ResponseType<any>>>(
-    handler: ({
-      ctx,
-      c,
-      input,
-    }: {
-      ctx: Ctx
-      c: ContextWithSuperJSON<E>
-      input: InputSchema extends ZodTypeAny ? z.infer<InputSchema> : void
-    }) => Return,
-  ) {
-    return {
-      type: "delete",
-      schema: this.inputSchema,
-      handler: handler as any,
-      middlewares: this.middlewares,
-    }
-  }
-
-  put<Return extends OptionalPromise<ResponseType<any>>>(
-    handler: ({
-      ctx,
-      c,
-      input,
-    }: {
-      ctx: Ctx
-      c: ContextWithSuperJSON<E>
-      input: InputSchema extends ZodTypeAny ? z.infer<InputSchema> : void
-    }) => Return,
-  ) {
-    return {
-      type: "put",
-      schema: this.inputSchema,
-      handler: handler as any,
-      middlewares: this.middlewares,
-    }
-  }
-
-  patch<Return extends OptionalPromise<ResponseType<any>>>(
-    handler: ({
-      ctx,
-      c,
-      input,
-    }: {
-      ctx: Ctx
-      c: ContextWithSuperJSON<E>
-      input: InputSchema extends ZodTypeAny ? z.infer<InputSchema> : void
-    }) => Return,
-  ) {
-    return {
-      type: "patch",
       schema: this.inputSchema,
       handler: handler as any,
       middlewares: this.middlewares,

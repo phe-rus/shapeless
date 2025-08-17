@@ -7,6 +7,7 @@ import { mergeRouters } from "./merge-routers"
 import { Procedure } from "./procedure"
 import { Router } from "./router"
 import { MiddlewareFunction, OperationType } from "./types"
+import { logger } from "hono/logger"
 
 const router = <
   T extends Record<string, OperationType<any, any>>,
@@ -79,6 +80,20 @@ class shapelessStack {
           origin: (origin) => origin,
           credentials: true,
         }),
+        /**
+         * (alias) logger(fn?: PrintFunc | undefined): MiddlewareHandler
+import logger
+Logger Middleware for Hono.
+
+@see — https://hono.dev/docs/middleware/builtin/logger
+
+@param fn — Optional function for customized logging behavior.
+
+@returns — The middleware handler function.
+
+@example
+         */
+        logger: logger(),
         /**
          * Global error handler for API endpoints.
          * 

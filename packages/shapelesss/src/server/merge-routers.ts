@@ -4,16 +4,16 @@ import { Router } from "./router"
 export type InferSchemaFromRouters<
   R extends Record<string, Router<any> | (() => Promise<Router<any>>)>,
 > = {
-  [P in keyof R]: R[P] extends () => Promise<Router<any>>
+    [P in keyof R]: R[P] extends () => Promise<Router<any>>
     ? R[P] extends () => Promise<infer T>
-      ? T extends Hono<any, infer S>
-        ? { [Q in keyof S]: S[Q] }
-        : never
-      : never
+    ? T extends Hono<any, infer S>
+    ? { [Q in keyof S]: S[Q] }
+    : never
+    : never
     : R[P] extends Hono<any, infer S>
-      ? { [Q in keyof S]: S[Q] }
-      : never
-}
+    ? { [Q in keyof S]: S[Q] }
+    : never
+  }
 
 export function mergeRouters<
   R extends Record<string, Router<any> | (() => Promise<Router<any>>)>,

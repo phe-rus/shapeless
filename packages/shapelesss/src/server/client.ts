@@ -8,7 +8,7 @@ import { ClientSocket, SystemEvents } from "@shapelesss/shared"
 import superjson from "superjson"
 import { MergeRoutes, OperationSchema, Router, RouterSchema } from "./router"
 import { InferSchemaFromRouters } from "./merge-routers"
-import { DeleteOperation, GetOperation, PatchOperation, PostOperation, PutOperation } from "./types"
+import { GetOperation, PostOperation } from "./types"
 
 type ClientResponseOfEndpoint<T extends Endpoint = Endpoint> = T extends {
   output: infer O
@@ -106,24 +106,6 @@ type OperationIO<
       }
       ? OperationSchema<Operation>["$get"][IOType]
       : never
-      : Operation extends PatchOperation<any>
-      ? OperationSchema<Operation> extends {
-        $patch: { [key in IOType]: any }
-      }
-      ? OperationSchema<Operation>["$patch"][IOType]
-      : never
-      : Operation extends DeleteOperation<any>
-      ? OperationSchema<Operation> extends {
-        $delete: { [key in IOType]: any }
-      }
-      ? OperationSchema<Operation>["$delete"][IOType]
-      : never
-      : Operation extends PutOperation<any>
-      ? OperationSchema<Operation> extends {
-        $put: { [key in IOType]: any }
-      }
-      ? OperationSchema<Operation>["$put"][IOType]
-      : never
       : Operation
       : never
     }
@@ -151,7 +133,7 @@ export const createClient = <T extends Router<any>>(
     ...opts
   } = options ?? ({} as ClientConfig)
 
-  const jfetch = async (input: RequestInfo | URL, init?: RequestInit) => {
+  const shapelessfetch = async (input: RequestInfo | URL, init?: RequestInit) => {
     // remove baseUrl from input if already included, for example during SSR
     const inputPath = input.toString().replace(baseUrl, "")
     const targetUrl = baseUrl + inputPath
@@ -176,7 +158,7 @@ export const createClient = <T extends Router<any>>(
 
   const baseClient = hc(baseUrl, {
     ...opts,
-    fetch: opts.fetch || jfetch,
+    fetch: opts.fetch || shapelessfetch,
   }) as unknown as UnionToIntersection<Client<T>>
 
   return createProxy(baseClient, baseUrl) as typeof baseClient
@@ -250,6 +232,7 @@ function createProxy(
             return target.$get({ query: serializedQuery }, options)
           }
         }
+
         if (prop === "$post") {
           return async (...args: any[]) => {
             const [data, options] = args
@@ -257,6 +240,7 @@ function createProxy(
             return target.$post({ json: serializedJson }, options)
           }
         }
+
         if (prop === "$url") {
           return (args?: any) => {
             const endpointPath = `/${routePath.slice(0, -1).join("/")}`
@@ -272,27 +256,7 @@ function createProxy(
             return url
           }
         }
-        if (prop === "$delete") {
-          return async (...args: any[]) => {
-            const [data, options] = args
-            const serialized = serializeWithSuperJSON(data)
-            return target.$delete({ json: serialized }, options)
-          }
-        }
-        if (prop === "$put") {
-          return async (...args: any[]) => {
-            const [data, options] = args
-            const serialized = serializeWithSuperJSON(data)
-            return target.$put({ json: serialized }, options)
-          }
-        }
-        if (prop === "$patch") {
-          return async (...args: any[]) => {
-            const [data, options] = args
-            const serialized = serializeWithSuperJSON(data)
-            return target.$patch({ json: serialized }, options)
-          }
-        }
+
         if (prop === "$ws") {
           return () => {
             const endpointPath = `/${routePath.slice(0, -1).join("/")}`
